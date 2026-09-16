@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivo 1964</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- MENU -->
+    <section id="menu" class="screen active">
+        <div class="menu-box">
+            <div class="stamp">ARQUIVO CONFIDENCIAL</div>
+
+            <h1>📜 Arquivo 1964</h1>
+
+            <p class="subtitle">
+                Uma investigação sobre os povos indígenas durante a ditadura militar.
+            </p>
+
+            <p class="intro">
+                Você encontrou uma caixa de documentos históricos.
+                Alguns estão incompletos, outros escondem informações importantes.
+            </p>
+
+            <p class="intro">
+                Sua tarefa é investigar os documentos, descobrir o que aconteceu
+                e tomar decisões que irão alterar a situação da comunidade
+                dentro desta simulação.
+            </p>
+
+            <button onclick="startGame()" class="main-button">
+                🔎 Começar investigação
+            </button>
+
+            <button onclick="showHowToPlay()" class="secondary-button">
+                📖 Como jogar
+            </button>
+
+            <div class="warning">
+                ⚠️ As situações e consequências do jogo são uma simulação didática
+                inspirada em acontecimentos históricos. Elas não representam
+                estatísticas reais.
+            </div>
+        </div>
+    </section>
+
+
+    <!-- JOGO -->
+    <section id="game" class="screen">
+
+        <header>
+            <div>
+                <span class="small-title">ARQUIVO 1964</span>
+                <h2 id="documentNumber">DOCUMENTO #001</h2>
+            </div>
+
+            <div class="progress-container">
+                <span id="progressText">1 / 8</span>
+                <div class="progress">
+                    <div id="progressBar"></div>
+                </div>
+            </div>
+        </header>
+
+
+        <main class="game-layout">
+
+            <!-- DOCUMENTO -->
+            <div class="document-area">
+
+                <div class="document">
+                    <div class="document-top">
+                        <span id="documentDate">1964</span>
+                        <span id="documentContext">DOCUMENTO HISTÓRICO</span>
+                    </div>
+
+                    <h1 id="documentTitle"></h1>
+
+                    <p id="documentDescription"></p>
+
+                    <div id="investigationBox" class="investigation hidden">
+                        <div class="investigation-title">
+                            🔎 Informação encontrada
+                        </div>
+
+                        <p id="investigationText"></p>
+
+                        <div class="clue">
+                            📌 <strong>O que isso revela:</strong>
+                            <span id="clueText"></span>
+                        </div>
+                    </div>
+
+                    <button
+                        id="investigateButton"
+                        onclick="investigate()"
+                        class="investigate-button">
+                        🔎 Investigar documento
+                    </button>
+
+                    <div id="choicesArea" class="choices hidden">
+
+                        <h3>O que você faria?</h3>
+
+                        <p class="choice-help">
+                            Sua decisão terá consequências para a comunidade
+                            nesta simulação.
+                        </p>
+
+                        <div id="choices"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LATERAL -->
+            <aside>
+
+                <div class="panel">
+                    <h3>🧭 Situação da comunidade</h3>
+
+                    <div class="stat">
+                        <div>
+                            <span>🏞️ Território</span>
+                            <strong id="territoryValue">50</strong>
+                        </div>
+                        <div class="bar">
+                            <div id="territoryBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat">
+                        <div>
+                            <span>🛡️ Proteção</span>
+                            <strong id="protectionValue">50</strong>
+                        </div>
+                        <div class="bar">
+                            <div id="protectionBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat">
+                        <div>
+                            <span>📚 Documentação</span>
+                            <strong id="documentationValue">50</strong>
+                        </div>
+                        <div class="bar">
+                            <div id="documentationBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat">
+                        <div>
+                            <span>🤝 Autonomia</span>
+                            <strong id="autonomyValue">50</strong>
+                        </div>
+                        <div class="bar">
+                            <div id="autonomyBar"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel">
+                    <h3>🔓 Investigação</h3>
+
+                    <p>
+                        Documentos investigados:
+                        <strong id="archiveCount">0</strong>
+                    </p>
+
+                    <p>
+                        Nível de investigação:
+                        <strong id="investigationLevel">Inicial</strong>
+                    </p>
+
+                    <div id="discoveredClues" class="clues">
+                        Nenhuma informação descoberta ainda.
+                    </div>
+                </div>
+
+
+                <div class="panel">
+                    <h3>📌 Registro</h3>
+                    <div id="log" class="log">
+                        A investigação ainda não começou.
+                    </div>
+                </div>
+
+            </aside>
+
+        </main>
+    </section>
+
+
+    <!-- FINAL -->
+    <section id="final" class="screen">
+
+        <div class="final-box">
+
+            <div class="stamp">ARQUIVO ENCERRADO</div>
+
+            <h1 id="finalTitle"></h1>
+
+            <div class="final-icon" id="finalIcon"></div>
+
+            <p id="finalText"></p>
+
+            <div class="final-reflection">
+                <h3>💭 O que sua investigação mostrou?</h3>
+                <p id="reflectionText"></p>
+            </div>
+
+            <div class="final-stats">
+
+                <div>
+                    <span>🏞️ Território</span>
+                    <strong id="finalTerritory"></strong>
+                </div>
+
+                <div>
+                    <span>🛡️ Proteção</span>
+                    <strong id="finalProtection"></strong>
+                </div>
+
+                <div>
+                    <span>📚 Documentação</span>
+                    <strong id="finalDocumentation"></strong>
+                </div>
+
+                <div>
+                    <span>🤝 Autonomia</span>
+                    <strong id="finalAutonomy"></strong>
+                </div>
+
+            </div>
+
+            <div class="historical-note">
+                <h3>📚 Contexto histórico</h3>
+
+                <p>
+                    Durante a ditadura militar brasileira, povos indígenas
+                    sofreram diferentes formas de violência e tiveram seus
+                    territórios e modos de vida afetados por políticas e ações
+                    do Estado.
+                </p>
+
+                <p>
+                    A Comissão Nacional da Verdade investigou violações de
+                    direitos humanos ocorridas no período e produziu documentos
+                    que hoje ajudam a preservar essa memória.
+                </p>
+
+                <p>
+                    Este jogo é uma representação didática. As escolhas feitas
+                    aqui não alteram a história real.
+                </p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="restartGame()" class="main-button">
+                    🔄 Investigar novamente
+                </button>
+
+                <button onclick="showSources()" class="secondary-button">
+                    📚 Ver fontes
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- COMO JOGAR -->
+    <div id="howToPlay" class="modal">
+
+        <div class="modal-content">
+
+            <button class="close" onclick="closeModal('howToPlay')">
+                ×
+            </button>
+
+            <h2>📖 Como jogar</h2>
+
+            <p>
+                Você é responsável por investigar uma sequência de documentos.
+            </p>
+
+            <p>
+                Primeiro, leia o documento e clique em
+                <strong>“Investigar documento”</strong>.
+            </p>
+
+            <p>
+                A investigação pode revelar informações que estavam escondidas.
+            </p>
+
+            <p>
+                Depois, escolha o que fazer.
+            </p>
+
+            <p>
+                Algumas decisões podem melhorar uma situação, enquanto outras
+                podem prejudicar determinados aspectos da comunidade.
+            </p>
+
+            <p>
+                Quanto mais você investiga, mais informações consegue reunir.
+                Isso pode liberar opções diferentes em documentos posteriores.
+            </p>
+
+            <p>
+                No final, suas decisões determinarão qual situação a comunidade
+                enfrentará dentro da simulação.
+            </p>
+
+            <button onclick="closeModal('howToPlay')" class="main-button">
+                Entendi
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- FONTES -->
+    <div id="sources" class="modal">
+
+        <div class="modal-content">
+
+            <button class="close" onclick="closeModal('sources')">
+                ×
+            </button>
+
+            <h2>📚 Fontes utilizadas</h2>
+
+            <p>
+                O conteúdo histórico do jogo foi inspirado em documentos e
+                informações disponibilizados por instituições públicas.
+            </p>
+
+            <ul>
+                <li>Arquivo Nacional — Acervos sobre o Regime Militar (1964–1985)</li>
+                <li>Memórias Reveladas — Comissão Nacional da Verdade</li>
+                <li>Relatório Final da Comissão Nacional da Verdade</li>
+                <li>Documentação sobre povos indígenas no acervo da CNV</li>
+            </ul>
+
+            <p>
+                Os acontecimentos apresentados no jogo foram adaptados para
+                uma experiência educativa e não devem ser interpretados como
+                documentos históricos originais.
+            </p>
+
+            <button onclick="closeModal('sources')" class="main-button">
+                Fechar
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
