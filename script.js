@@ -1,1039 +1,612 @@
-/* =====================================================
-   ARQUIVO 1964
-   Investigação e decisões
-===================================================== */
-
-
-/* =====================================================
-   ESTADO DO JOGO
-===================================================== */
-
-let currentStage = 0;
-
-let stats = {
-    territory: 50,
-    protection: 50,
-    documentation: 50,
-    autonomy: 50
-};
-
-let investigated = false;
-
-let discoveredClues = [];
-
-let history = [];
-
-
-/* =====================================================
-   DOCUMENTOS
-===================================================== */
-
-const stages = [
-
-    {
-        number: "DOCUMENTO #001",
-        date: "1964",
-        context: "Início de um novo período",
-
-        title: "Uma mudança chega ao território",
-
-        description:
-            "Os primeiros registros encontrados mostram que o país entrou em um novo período político. Para uma comunidade indígena, porém, as mudanças que aparecem nos documentos parecem distantes da vida cotidiana. O que importa é entender como as decisões tomadas fora da comunidade podem afetar seu território e sua forma de viver.",
-
-        investigation:
-            "Entre os papéis há referências a novas decisões políticas e administrativas. O documento não explica diretamente o que acontecerá com a comunidade, mas deixa claro que decisões externas poderão interferir em seu território.",
-
-        clue:
-            "As decisões tomadas por autoridades podem produzir consequências concretas para comunidades que não participaram dessas decisões.",
-
-        choices: [
-
-            {
-                text: "Registrar cuidadosamente o que está acontecendo.",
-                detail:
-                    "A informação pode ser importante para compreender os próximos acontecimentos.",
-
-                effects: {
-                    documentation: 10
-                },
-
-                message:
-                    "Você decidiu preservar o registro. Agora existe uma memória documentada do que estava acontecendo."
-            },
-
-            {
-                text: "Tentar proteger imediatamente o território.",
-                detail:
-                    "A prioridade passa a ser evitar que mudanças externas afetem o espaço da comunidade.",
-
-                effects: {
-                    territory: 8,
-                    protection: 5
-                },
-
-                message:
-                    "A comunidade passa a concentrar esforços na proteção de seu território."
-            }
-
-        ]
-    },
-
-
-    {
-        number: "DOCUMENTO #002",
-        date: "1967",
-        context: "O território entra em disputa",
-
-        title: "Uma área que não parece mais segura",
-
-        description:
-            "Um relatório menciona que uma área tradicionalmente utilizada pela comunidade passou a receber atenção de autoridades e outros interesses externos. As pessoas da comunidade percebem que aquilo que sempre fizeram naquele espaço pode começar a ser questionado.",
-
-        investigation:
-            "Ao comparar os documentos, você percebe que o problema não é apenas uma mudança no mapa. A utilização do território está ligada à sobrevivência, à cultura e à organização da comunidade.",
-
-        clue:
-            "Território não representa apenas espaço físico: ele está relacionado à vida social e cultural da comunidade.",
-
-        choices: [
-
-            {
-                text: "Reunir documentos que comprovem a relação da comunidade com o território.",
-                detail:
-                    "Registrar essa relação pode fortalecer a memória e a documentação.",
-
-                effects: {
-                    documentation: 8,
-                    territory: 6
-                },
-
-                message:
-                    "Você começa a reunir evidências sobre a relação histórica da comunidade com aquele território."
-            },
-
-            {
-                text: "Aceitar a mudança para evitar um conflito.",
-                detail:
-                    "A decisão evita uma confrontação imediata, mas pode deixar o território mais vulnerável.",
-
-                effects: {
-                    territory: -12,
-                    autonomy: -5
-                },
-
-                message:
-                    "A mudança acontece. A comunidade evita um conflito imediato, mas perde parte do controle sobre seu espaço."
-            }
-
-        ]
-    },
-
-
-    {
-        number: "DOCUMENTO #003",
-        date: "1969",
-        context: "Uma informação escondida",
-
-        title: "O relatório que ficou de lado",
-
-        description:
-            "Entre vários documentos administrativos existe um relatório que quase passou despercebido. Ele contém informações sobre problemas enfrentados por indígenas, mas não parece ter recebido a mesma atenção que outros documentos.",
-
-        investigation:
-            "O relatório mostra que havia informações circulando sobre situações enfrentadas pelos povos indígenas. Encontrar o documento muda a compreensão do que estava acontecendo.",
-
-        clue:
-            "Documentar acontecimentos pode ser fundamental para que situações esquecidas sejam conhecidas posteriormente.",
-
-        choices: [
-
-            {
-                text: "Guardar uma cópia do relatório no arquivo da investigação.",
-                detail:
-                    "A prioridade é garantir que a informação não desapareça.",
-
-                effects: {
-                    documentation: 15
-                },
-
-                message:
-                    "O relatório agora faz parte do arquivo. Uma informação que poderia ser esquecida foi preservada."
-            },
-
-            {
-                text: "Usar o relatório para pressionar por medidas de proteção.",
-                detail:
-                    "A informação deixa de ser apenas um registro e passa a orientar uma ação.",
-
-                effects: {
-                    protection: 12,
-                    documentation: 5
-                },
-
-                message:
-                    "As informações reunidas começam a ser utilizadas para tentar aumentar a proteção da comunidade."
-            }
-
-        ]
-    },
-
-
-    {
-        number: "DOCUMENTO #004",
-        date: "1970",
-        context: "Uma escolha importante",
-
-        title: "Quem deve decidir?",
-
-        description:
-            "Você encontra registros sobre decisões tomadas a respeito da comunidade. Em nenhum momento aparece claramente a participação das próprias pessoas afetadas.",
-
-        investigation:
-            "Uma anotação chama sua atenção: as decisões parecem estar sendo tomadas por pessoas de fora da comunidade.",
-
-        clue:
-            "Investigar também significa perguntar quem está sendo ouvido antes de uma decisão ser tomada.",
-
-        choices: [
-
-            {
-                text: "Defender a participação da própria comunidade.",
-                detail:
-                    "As pessoas diretamente afetadas devem ter espaço para expressar suas necessidades.",
-
-                effects: {
-                    autonomy: 15,
-                    protection: 5
-                },
-
-                message:
-                    "A comunidade ganha mais espaço para participar das decisões que afetam sua própria vida."
-            },
-
-            {
-                text: "Deixar as autoridades decidirem o que fazer.",
-                detail:
-                    "A decisão pode parecer mais rápida, mas reduz a participação da comunidade.",
-
-                effects: {
-                    autonomy: -12
-                },
-
-                message:
-                    "As decisões continuam sendo tomadas principalmente por pessoas de fora da comunidade."
-            }
-
-        ]
-    },
-
-
-    {
-        number: "DOCUMENTO #005",
-        date: "1972",
-        context: "Uma nova pista",
-
-        title: "O documento que conecta tudo",
-
-        description:
-            "Você percebe que vários acontecimentos que pareciam separados podem estar relacionados. Um documento menciona território, outro fala sobre proteção e outro registra informações sobre a comunidade.",
-
-        investigation:
-            "Ao comparar os documentos anteriores, você consegue enxergar uma relação entre eles. A investigação deixou de ser apenas uma coleção de papéis: agora existe uma história sendo reconstruída.",
-
-        clue:
-            "Relacionar documentos diferentes pode revelar uma situação que não aparece em nenhum documento isoladamente.",
-
-        choices: [
-
-            {
-                text: "Comparar todos os documentos antes de decidir.",
-                detail:
-                    "Você tenta entender o contexto completo antes de tomar uma decisão.",
-
-                effects: {
-                    documentation: 8,
-                    autonomy: 5,
-                    protection: 5
-                },
-
-                message:
-                    "Você decide não agir com pressa. Os documentos são comparados antes de uma nova decisão."
-            },
-
-            {
-                text: "Agir imediatamente com as informações disponíveis.",
-                detail:
-                    "A ação é mais rápida, mas algumas informações ainda não foram analisadas.",
-
-                effects: {
-                    protection: 8,
-                    documentation: -5
-                },
-
-                message:
-                    "Uma ação rápida é tomada. Ela pode ajudar, mas algumas informações ainda ficaram sem análise."
-            }
-
-        ]
-    },
-
-
-    {
-        number: "DOCUMENTO #006",
-        date: "1975",
-        context: "A memória da comunidade",
-
-        title: "Uma história contada por quem viveu",
-
-        description:
-            "Você encontra relatos que mostram a importância da memória das próprias pessoas da comunidade. Os documentos oficiais contam apenas uma parte da história.",
-
-        investigation:
-            "A nova informação mostra que documentos administrativos não são suficientes para reconstruir toda uma história. As experiências das próprias comunidades também são importantes.",
-
-        clue:
-            "A memória de quem viveu os acontecimentos ajuda a complementar os registros oficiais.",
-
-        choices: [
-
-            {
-                text: "Registrar os relatos da comunidade.",
-                detail:
-                    "A investigação passa a considerar também a memória das pessoas afetadas.",
-
-                effects: {
-                    documentation: 10,
-                    autonomy: 10
-                },
-
-                message:
-                    "Os relatos da comunidade passam a fazer parte da memória preservada."
-            },
-
-            {
-                text: "Usar somente os documentos oficiais.",
-                detail:
-                    "Isso mantém o arquivo mais limitado ao que foi registrado pelas autoridades.",
-
-                effects: {
-                    documentation: 4,
-                    autonomy: -8
-                },
-
-                message:
-                    "A investigação continua, mas parte das experiências da própria comunidade fica fora do arquivo."
-            }
-
-        ]
-    },
-
-
-    {
-        number: "DOCUMENTO #007",
-        date: "1978",
-        context: "Uma oportunidade",
-
-        title: "Agora você conhece a história",
-
-        description:
-            "Depois de investigar vários documentos, você já consegue compreender muito melhor a situação. Mas ainda existe uma escolha: usar o conhecimento reunido para tentar melhorar a situação ou simplesmente encerrar o arquivo.",
-
-        investigation:
-            "Você percebe que as decisões anteriores construíram o caminho até aqui. O resultado não depende de uma única escolha.",
-
-        clue:
-            "As consequências de uma situação histórica podem ser resultado de várias decisões acumuladas.",
-
-        choices: [
-
-            {
-                text: "Usar tudo o que foi descoberto para fortalecer a comunidade.",
-                detail:
-                    "A investigação é transformada em uma tentativa de melhorar a situação.",
-
-                effects: {
-                    territory: 7,
-                    protection: 10,
-                    autonomy: 8
-                },
-
-                message:
-                    "Tudo o que você descobriu começa a ser utilizado para fortalecer a comunidade."
-            },
-
-            {
-                text: "Encerrar a investigação e apenas guardar os documentos.",
-                detail:
-                    "A memória é preservada, mas poucas ações são tomadas.",
-
-                effects: {
-                    documentation: 12
-                },
-
-                message:
-                    "Os documentos são preservados. A história continuará registrada, mas poucas mudanças acontecem."
-            }
-
-        ]
-    },
-
-
-    {
-        number: "DOCUMENTO #008",
-        date: "1985",
-        context: "O fim de um período",
-
-        title: "O arquivo chega ao fim",
-
-        description:
-            "O período da ditadura militar chega ao fim. Você olha para todos os documentos reunidos e percebe que a história não pode ser resumida em uma única decisão.",
-
-        investigation:
-            "Ao reunir tudo, você percebe que cada escolha feita durante a investigação alterou o cenário da simulação. Agora resta descobrir qual situação foi construída ao longo do caminho.",
-
-        clue:
-            "A memória histórica é construída a partir de diferentes documentos, experiências e perspectivas.",
-
-        choices: [
-
-            {
-                text: "Preservar o arquivo e deixar a história disponível para o futuro.",
-                detail:
-                    "O objetivo final é garantir que as informações descobertas continuem acessíveis.",
-
-                effects: {
-                    documentation: 10,
-                    autonomy: 5
-                },
-
-                message:
-                    "O arquivo é preservado para que outras pessoas possam conhecer essa história."
-            },
-
-            {
-                text: "Priorizar a situação atual da comunidade.",
-                detail:
-                    "A investigação termina concentrando-se nas condições construídas ao longo da história.",
-
-                effects: {
-                    territory: 5,
-                    protection: 5,
-                    autonomy: 5
-                },
-
-                message:
-                    "A investigação termina com atenção às condições que a comunidade conseguiu preservar."
-            }
-
-        ]
-    }
-
-];
-
-
-/* =====================================================
-   INÍCIO
-===================================================== */
-
-function startGame() {
-
-    document.getElementById("menu").classList.remove("active");
-    document.getElementById("game").classList.add("active");
-
-    resetGame();
-
-    renderStage();
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #171512;
+    color: #2d2924;
+    min-height: 100vh;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.screen {
+    display: none;
+    min-height: 100vh;
+}
+
+.screen.active {
+    display: block;
 }
 
 
-function resetGame() {
+/* =========================
+   MENU
+========================= */
 
-    currentStage = 0;
+#menu {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background:
+        radial-gradient(circle at center, #3a332a, #171512 70%);
+}
 
-    stats = {
-        territory: 50,
-        protection: 50,
-        documentation: 50,
-        autonomy: 50
-    };
+#menu.active {
+    display: flex;
+}
 
-    investigated = false;
+.menu-box {
+    width: min(700px, 100%);
+    background: #eee5d2;
+    padding: 50px;
+    border: 1px solid #9a896c;
+    box-shadow: 0 15px 50px rgba(0,0,0,.5);
+    text-align: center;
+}
 
-    discoveredClues = [];
+.stamp {
+    display: inline-block;
+    border: 2px solid #7a332b;
+    color: #7a332b;
+    padding: 6px 12px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    transform: rotate(-2deg);
+    margin-bottom: 20px;
+}
 
-    history = [];
+.menu-box h1 {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
 
-    updateIndicators();
-    updateSidebars();
+.subtitle {
+    font-size: 21px;
+    margin-bottom: 25px;
+}
+
+.intro {
+    font-family: Arial, sans-serif;
+    line-height: 1.7;
+    color: #554d43;
+    margin-bottom: 15px;
+}
+
+.warning {
+    margin-top: 30px;
+    padding: 14px;
+    background: #ded4c0;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
 }
 
 
-/* =====================================================
-   RENDER DOCUMENTO
-===================================================== */
+/* =========================
+   BOTÕES
+========================= */
 
-function renderStage() {
+.main-button,
+.secondary-button,
+.investigate-button {
+    border: none;
+    padding: 14px 22px;
+    font-size: 17px;
+    margin: 8px;
+    transition: .2s;
+}
 
-    const stage = stages[currentStage];
+.main-button {
+    background: #6f3f2d;
+    color: white;
+}
 
-    investigated = false;
+.main-button:hover {
+    background: #522d21;
+    transform: translateY(-2px);
+}
 
-    document.getElementById("documentNumber").textContent =
-        stage.number;
+.secondary-button {
+    background: #cfc1a7;
+    color: #302a23;
+}
 
-    document.getElementById("documentDate").textContent =
-        stage.date;
+.secondary-button:hover {
+    background: #b9a98c;
+}
 
-    document.getElementById("documentContext").textContent =
-        stage.context;
+.investigate-button {
+    background: #303f35;
+    color: white;
+    width: 100%;
+    margin: 25px 0 0;
+}
 
-    document.getElementById("documentTitle").textContent =
-        stage.title;
-
-    document.getElementById("documentDescription").textContent =
-        stage.description;
-
-    document.getElementById("investigationText").textContent =
-        stage.investigation;
-
-    document.getElementById("clueText").textContent =
-        stage.clue;
-
-    document.getElementById("investigationBox")
-        .classList.add("hidden");
-
-    document.getElementById("choicesArea")
-        .classList.add("hidden");
-
-    document.getElementById("investigateButton")
-        .classList.remove("hidden");
-
-    const choicesContainer =
-        document.getElementById("choices");
-
-    choicesContainer.innerHTML = "";
-
-    stage.choices.forEach((choice, index) => {
-
-        const button = document.createElement("button");
-
-        button.className = "choice";
-
-        button.innerHTML = `
-            <strong>${choice.text}</strong>
-            <small>${choice.detail}</small>
-        `;
-
-        button.onclick = () => makeDecision(index);
-
-        choicesContainer.appendChild(button);
-    });
-
-
-    const progress =
-        ((currentStage) / stages.length) * 100;
-
-    document.getElementById("progressBar")
-        .style.width = `${progress}%`;
-
-    document.getElementById("progressText")
-        .textContent =
-        `${currentStage + 1} / ${stages.length}`;
-
-
-    updateIndicators();
-    updateSidebars();
+.investigate-button:hover {
+    background: #1f2b24;
 }
 
 
-/* =====================================================
-   INVESTIGAR
-===================================================== */
+/* =========================
+   HEADER
+========================= */
 
-function investigate() {
+header {
+    background: #211e1a;
+    color: #eee5d2;
+    padding: 20px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    if (investigated) return;
+.small-title {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    opacity: .7;
+}
 
-    investigated = true;
+header h2 {
+    margin-top: 5px;
+}
 
-    const stage = stages[currentStage];
+.progress-container {
+    width: 230px;
+}
 
-    document.getElementById("investigationBox")
-        .classList.remove("hidden");
+.progress-container span {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+}
 
-    document.getElementById("choicesArea")
-        .classList.remove("hidden");
+.progress {
+    height: 7px;
+    background: #4b443b;
+    margin-top: 7px;
+}
 
-    document.getElementById("investigateButton")
-        .classList.add("hidden");
-
-    discoveredClues.push({
-        number: stage.number,
-        clue: stage.clue
-    });
-
-    addLog(
-        `Você investigou ${stage.number} e encontrou uma nova informação.`
-    );
-
-    updateSidebars();
+#progressBar {
+    height: 100%;
+    width: 0%;
+    background: #b89056;
+    transition: .4s;
 }
 
 
-/* =====================================================
-   DECISÃO
-===================================================== */
+/* =========================
+   LAYOUT
+========================= */
 
-function makeDecision(choiceIndex) {
-
-    if (!investigated) return;
-
-    const choice =
-        stages[currentStage].choices[choiceIndex];
-
-    applyEffects(choice.effects);
-
-    addLog(choice.message);
-
-    showMessage(choice.message);
-
-    setTimeout(() => {
-
-        if (currentStage < stages.length - 1) {
-
-            currentStage++;
-
-            renderStage();
-
-        } else {
-
-            showFinal();
-
-        }
-
-    }, 1000);
+.game-layout {
+    width: min(1300px, 94%);
+    margin: 35px auto;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 25px;
 }
 
 
-/* =====================================================
-   APLICAR CONSEQUÊNCIAS
-===================================================== */
+/* =========================
+   DOCUMENTO
+========================= */
 
-function applyEffects(effects) {
+.document-area {
+    display: flex;
+    justify-content: center;
+}
 
-    for (const key in effects) {
+.document {
+    width: 100%;
+    background: #eee5d2;
+    padding: 45px;
+    min-height: 600px;
+    border: 1px solid #a9987a;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
 
-        stats[key] += effects[key];
+.document-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #766b5b;
+    border-bottom: 1px solid #b9a98d;
+    padding-bottom: 10px;
+    margin-bottom: 35px;
+}
 
-        stats[key] =
-            Math.max(0, Math.min(100, stats[key]));
-    }
+.document h1 {
+    font-size: 34px;
+    margin-bottom: 20px;
+}
 
-    updateIndicators();
+.document > p {
+    font-size: 18px;
+    line-height: 1.8;
+    max-width: 850px;
 }
 
 
-/* =====================================================
-   INDICADORES
-===================================================== */
+/* =========================
+   INVESTIGAÇÃO
+========================= */
 
-function updateIndicators() {
+.investigation {
+    background: #ddd1b9;
+    border-left: 5px solid #765a36;
+    padding: 20px;
+    margin-top: 30px;
+}
 
-    setValue("territory");
-    setValue("protection");
-    setValue("documentation");
-    setValue("autonomy");
+.investigation-title {
+    font-weight: bold;
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.investigation p {
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+.clue {
+    background: #eee5d2;
+    padding: 13px;
+    line-height: 1.5;
 }
 
 
-function setValue(name) {
+/* =========================
+   ESCOLHAS
+========================= */
 
-    const value = stats[name];
+.choices {
+    margin-top: 30px;
+}
 
-    document.getElementById(name + "Value")
-        .textContent = value;
+.choices h3 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
 
-    document.getElementById(name + "Bar")
-        .style.width = value + "%";
+.choice-help {
+    color: #6c6255;
+    margin-bottom: 18px;
+}
+
+.choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: #e1d6c0;
+    border: 1px solid #a89778;
+    padding: 17px;
+    margin: 12px 0;
+    color: #302b25;
+    transition: .2s;
+}
+
+.choice:hover {
+    background: #cfc0a4;
+    transform: translateX(4px);
+}
+
+.choice strong {
+    display: block;
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.choice small {
+    font-family: Arial, sans-serif;
+    color: #665c50;
+    line-height: 1.5;
 }
 
 
-/* =====================================================
+/* =========================
    SIDEBAR
-===================================================== */
+========================= */
 
-function updateSidebars() {
+aside {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
 
-    document.getElementById("archiveCount")
-        .textContent = discoveredClues.length;
+.panel {
+    background: #eee5d2;
+    padding: 20px;
+    border: 1px solid #a9987a;
+}
 
-    let level = "Inicial";
+.panel h3 {
+    margin-bottom: 18px;
+}
 
-    if (discoveredClues.length >= 6) {
-        level = "Avançado";
-    } else if (discoveredClues.length >= 3) {
-        level = "Intermediário";
-    }
+.stat {
+    margin-bottom: 18px;
+    font-family: Arial, sans-serif;
+}
 
-    document.getElementById("investigationLevel")
-        .textContent = level;
+.stat > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
 
+.bar {
+    height: 8px;
+    background: #c6bba6;
+}
 
-    const cluesContainer =
-        document.getElementById("discoveredClues");
+.bar div {
+    height: 100%;
+    width: 50%;
+    transition: .5s;
+}
 
-    if (discoveredClues.length === 0) {
+#territoryBar {
+    background: #68775e;
+}
 
-        cluesContainer.innerHTML =
-            "Nenhuma informação descoberta ainda.";
+#protectionBar {
+    background: #765d54;
+}
 
-        return;
-    }
+#documentationBar {
+    background: #65717a;
+}
 
-    cluesContainer.innerHTML =
-        discoveredClues.map(item => `
-            <div class="clue-item">
-                <strong>${item.number}</strong><br>
-                ${item.clue}
-            </div>
-        `).join("");
+#autonomyBar {
+    background: #85714e;
+}
+
+.panel p {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.clues {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.clue-item {
+    padding: 8px;
+    background: #ddd1b9;
+    margin-top: 7px;
+}
+
+.log {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.log-entry {
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #c5b89f;
 }
 
 
-/* =====================================================
-   REGISTRO
-===================================================== */
+/* =========================
+   FINAL
+========================= */
 
-function addLog(message) {
+#final {
+    padding: 50px 20px;
+    background:
+        radial-gradient(circle at center, #393229, #171512 70%);
+}
 
-    history.push(message);
+.final-box {
+    max-width: 850px;
+    margin: auto;
+    background: #eee5d2;
+    padding: 50px;
+    text-align: center;
+    border: 1px solid #a9987a;
+    box-shadow: 0 15px 50px rgba(0,0,0,.5);
+}
 
-    const log =
-        document.getElementById("log");
+.final-icon {
+    font-size: 70px;
+    margin: 15px;
+}
 
-    log.innerHTML =
-        history.map((item, index) => `
-            <div class="log-entry">
-                <strong>${index + 1}.</strong>
-                ${item}
-            </div>
-        `).join("");
+.final-box h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
 
-    log.scrollTop = log.scrollHeight;
+#finalText {
+    font-size: 19px;
+    line-height: 1.8;
+    margin: 20px auto;
+    max-width: 700px;
+}
+
+.final-reflection {
+    background: #ddd1b9;
+    padding: 25px;
+    text-align: left;
+    margin: 30px 0;
+}
+
+.final-reflection h3 {
+    margin-bottom: 10px;
+}
+
+.final-reflection p {
+    line-height: 1.7;
+}
+
+.final-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 25px 0;
+}
+
+.final-stats div {
+    background: #ddd1b9;
+    padding: 15px;
+}
+
+.final-stats span {
+    display: block;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+}
+
+.final-stats strong {
+    display: block;
+    font-size: 25px;
+    margin-top: 5px;
+}
+
+.historical-note {
+    text-align: left;
+    background: #d8ccb5;
+    padding: 25px;
+    line-height: 1.7;
+}
+
+.historical-note h3 {
+    margin-bottom: 10px;
+}
+
+.historical-note p {
+    margin-bottom: 12px;
 }
 
 
-/* =====================================================
-   MENSAGEM
-===================================================== */
+/* =========================
+   MODAL
+========================= */
 
-function showMessage(message) {
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.75);
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
-    const oldMessage =
-        document.querySelector(".temporary-message");
+.modal.active {
+    display: flex;
+}
 
-    if (oldMessage) {
-        oldMessage.remove();
-    }
+.modal-content {
+    position: relative;
+    max-width: 650px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #eee5d2;
+    padding: 40px;
+}
 
-    const div =
-        document.createElement("div");
+.modal-content h2 {
+    margin-bottom: 20px;
+}
 
-    div.className = "temporary-message";
+.modal-content p,
+.modal-content li {
+    font-family: Arial, sans-serif;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
 
-    div.textContent = message;
+.modal-content ul {
+    padding-left: 20px;
+}
 
-    div.style.position = "fixed";
-    div.style.bottom = "25px";
-    div.style.left = "50%";
-    div.style.transform = "translateX(-50%)";
-    div.style.background = "#eee5d2";
-    div.style.padding = "15px 25px";
-    div.style.border = "1px solid #8c795d";
-    div.style.boxShadow = "0 5px 20px rgba(0,0,0,.4)";
-    div.style.zIndex = "20";
-
-    document.body.appendChild(div);
-
-    setTimeout(() => {
-
-        div.remove();
-
-    }, 950);
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    background: none;
+    border: none;
+    font-size: 30px;
 }
 
 
-/* =====================================================
-   FINAIS
-===================================================== */
+/* =========================
+   UTILIDADES
+========================= */
 
-function showFinal() {
-
-    document.getElementById("game")
-        .classList.remove("active");
-
-    document.getElementById("final")
-        .classList.add("active");
-
-    const final = calculateFinal();
-
-    document.getElementById("finalIcon")
-        .textContent = final.icon;
-
-    document.getElementById("finalTitle")
-        .textContent = final.title;
-
-    document.getElementById("finalText")
-        .textContent = final.text;
-
-    document.getElementById("reflectionText")
-        .textContent = final.reflection;
-
-    document.getElementById("finalTerritory")
-        .textContent = stats.territory;
-
-    document.getElementById("finalProtection")
-        .textContent = stats.protection;
-
-    document.getElementById("finalDocumentation")
-        .textContent = stats.documentation;
-
-    document.getElementById("finalAutonomy")
-        .textContent = stats.autonomy;
+.hidden {
+    display: none !important;
 }
 
 
-/* =====================================================
-   DEFINIÇÃO DOS 8 FINAIS
-===================================================== */
+/* =========================
+   RESPONSIVO
+========================= */
 
-function calculateFinal() {
+@media (max-width: 900px) {
 
-    const t = stats.territory;
-    const p = stats.protection;
-    const d = stats.documentation;
-    const a = stats.autonomy;
-
-
-    /*
-       FINAL 1
-       Território + proteção + autonomia altos
-    */
-
-    if (t >= 65 && p >= 65 && a >= 60) {
-
-        return {
-
-            icon: "🌿",
-
-            title: "A comunidade conseguiu se proteger",
-
-            text:
-                "Ao longo da investigação, suas decisões ajudaram a construir uma situação em que a comunidade conseguiu preservar parte importante de seu território, fortalecer sua proteção e manter espaço para participar das decisões que afetavam sua vida.",
-
-            reflection:
-                "Você percebeu que proteger uma comunidade não depende de uma única decisão. O resultado foi construído pouco a pouco, conforme você investigava os documentos e escolhia como agir."
-        };
+    .game-layout {
+        grid-template-columns: 1fr;
     }
 
-
-    /*
-       FINAL 2
-       Documentação muito alta
-    */
-
-    if (d >= 80 && d >= t + 15 && d >= p + 10) {
-
-        return {
-
-            icon: "📚",
-
-            title: "A história não foi apagada",
-
-            text:
-                "Você reuniu uma grande quantidade de informações e conseguiu preservar documentos e relatos importantes. Mesmo sem resolver todos os problemas da comunidade, a história permaneceu registrada.",
-
-            reflection:
-                "Sua investigação mostrou que preservar a memória também é importante. Um acontecimento pode ser esquecido quando seus registros desaparecem."
-        };
+    aside {
+        order: 2;
     }
 
-
-    /*
-       FINAL 3
-       Território baixo
-    */
-
-    if (t < 35) {
-
-        return {
-
-            icon: "🏞️",
-
-            title: "O território ficou ameaçado",
-
-            text:
-                "As decisões tomadas durante a investigação deixaram o território da comunidade mais vulnerável. A comunidade precisou lidar com mudanças em seu espaço e com uma redução de sua capacidade de controlar aquilo que acontecia ao seu redor.",
-
-            reflection:
-                "O resultado mostra como decisões relacionadas ao território podem afetar muito mais do que um pedaço de terra: elas podem atingir a vida e a organização de uma comunidade."
-        };
+    .final-stats {
+        grid-template-columns: repeat(2, 1fr);
     }
-
-
-    /*
-       FINAL 4
-       Proteção baixa
-    */
-
-    if (p < 35) {
-
-        return {
-
-            icon: "🛡️",
-
-            title: "Os documentos chegaram tarde demais",
-
-            text:
-                "Você encontrou informações importantes, mas as decisões tomadas ao longo do caminho não conseguiram aumentar suficientemente a proteção da comunidade.",
-
-            reflection:
-                "A investigação mostrou uma diferença importante: descobrir um problema é diferente de conseguir agir sobre ele."
-        };
-    }
-
-
-    /*
-       FINAL 5
-       Autonomia alta
-    */
-
-    if (a >= 75 && t >= 55) {
-
-        return {
-
-            icon: "🤝",
-
-            title: "A comunidade conseguiu manter sua voz",
-
-            text:
-                "As decisões tomadas durante a investigação deram mais espaço para que a própria comunidade participasse das escolhas que afetavam seu território e sua vida.",
-
-            reflection:
-                "Proteger uma comunidade não significa simplesmente decidir por ela. Escutar as pessoas diretamente afetadas também faz parte da proteção."
-        };
-    }
-
-
-    /*
-       FINAL 6
-       Documentação alta, outros indicadores baixos
-    */
-
-    if (d >= 70 && p < 55 && t < 55) {
-
-        return {
-
-            icon: "📄",
-
-            title: "Você descobriu muito, mas conseguiu mudar pouco",
-
-            text:
-                "Seu arquivo ficou cheio de informações importantes. Porém, a situação da comunidade continuou difícil porque poucas decisões foram capazes de transformar aquilo que você descobriu em proteção concreta.",
-
-            reflection:
-                "A investigação mostrou que conhecimento e ação estão relacionados, mas não são a mesma coisa."
-        };
-    }
-
-
-    /*
-       FINAL 7
-       Equilíbrio
-    */
-
-    const average =
-        (t + p + d + a) / 4;
-
-    const difference =
-        Math.max(t, p, d, a) -
-        Math.min(t, p, d, a);
-
-    if (average >= 55 && difference <= 25) {
-
-        return {
-
-            icon: "🌱",
-
-            title: "Um caminho de resistência",
-
-            text:
-                "Nenhum dos problemas desapareceu completamente, mas suas decisões ajudaram a preservar diferentes aspectos da vida da comunidade. O território, a proteção, a memória e a autonomia terminaram relativamente equilibrados.",
-
-            reflection:
-                "A investigação mostrou que situações históricas são complexas. Uma decisão pode ajudar em um aspecto e, ao mesmo tempo, não resolver outro."
-        };
-    }
-
-
-    /*
-       FINAL 8
-       Final restante
-    */
-
-    return {
-
-        icon: "📖",
-
-        title: "O arquivo ainda não está completo",
-
-        text:
-            "Você chegou ao fim dos documentos disponíveis, mas algumas perguntas continuam sem resposta. Parte da história foi preservada, enquanto outras situações permaneceram difíceis para a comunidade.",
-
-        reflection:
-            "Talvez essa seja uma das principais descobertas da investigação: a história não cabe em uma única resposta. É preciso continuar procurando documentos, ouvir diferentes pessoas e comparar diferentes versões."
-    };
 }
 
+@media (max-width: 600px) {
 
-/* =====================================================
-   REINICIAR
-===================================================== */
+    .menu-box,
+    .document,
+    .final-box {
+        padding: 25px;
+    }
 
-function restartGame() {
+    .menu-box h1 {
+        font-size: 36px;
+    }
 
-    document.getElementById("final")
-        .classList.remove("active");
+    .document h1 {
+        font-size: 27px;
+    }
 
-    document.getElementById("game")
-        .classList.add("active");
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
 
-    resetGame();
+    .progress-container {
+        width: 100%;
+    }
 
-    renderStage();
-}
-
-
-/* =====================================================
-   MODAIS
-===================================================== */
-
-function showHowToPlay() {
-
-    document.getElementById("howToPlay")
-        .classList.add("active");
-}
-
-
-function showSources() {
-
-    document.getElementById("sources")
-        .classList.add("active");
-}
-
-
-function closeModal(id) {
-
-    document.getElementById(id)
-        .classList.remove("active");
+    .final-stats {
+        grid-template-columns: 1fr;
+    }
 }
