@@ -3,372 +3,845 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arquivo 1964</title>
+
+    <title>Arquivo 1964 — Comissão da Verdade</title>
+
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
 
-    <!-- MENU -->
+<div id="app">
+
+    <!-- =========================
+         MENU
+    ========================== -->
+
     <section id="menu" class="screen active">
-        <div class="menu-box">
-            <div class="stamp">ARQUIVO CONFIDENCIAL</div>
 
-            <h1>📜 Arquivo 1964</h1>
+        <div class="paper-card cover">
 
-            <p class="subtitle">
-                Uma investigação sobre os povos indígenas durante a ditadura militar.
+            <div class="stamp">
+                ARQUIVO CONFIDENCIAL
+            </div>
+
+            <p class="eyebrow">
+                SIMULAÇÃO DE INVESTIGAÇÃO HISTÓRICA
             </p>
 
-            <p class="intro">
-                Você encontrou uma caixa de documentos históricos.
-                Alguns estão incompletos, outros escondem informações importantes.
+            <h1>
+                📁 Arquivo 1964
+            </h1>
+
+            <h2>
+                Comissão da Verdade — Povos Indígenas
+            </h2>
+
+            <p class="lead">
+                A sala inteira será transformada em uma comissão investigadora.
+                Vocês deverão analisar documentos, comparar evidências,
+                discutir dúvidas e construir um relatório coletivo.
             </p>
-
-            <p class="intro">
-                Sua tarefa é investigar os documentos, descobrir o que aconteceu
-                e tomar decisões que irão alterar a situação da comunidade
-                dentro desta simulação.
-            </p>
-
-            <button onclick="startGame()" class="main-button">
-                🔎 Começar investigação
-            </button>
-
-            <button onclick="showHowToPlay()" class="secondary-button">
-                📖 Como jogar
-            </button>
 
             <div class="warning">
-                ⚠️ As situações e consequências do jogo são uma simulação didática
-                inspirada em acontecimentos históricos. Elas não representam
-                estatísticas reais.
+
+                <strong>Importante:</strong>
+
+                Esta é uma atividade educativa.
+                Os documentos apresentados no jogo são
+                adaptações didáticas baseadas em fontes históricas reais.
+                Eles não são reproduções dos documentos originais.
+
             </div>
+
+            <div class="button-row">
+
+                <button class="primary" onclick="startGame()">
+                    ▶ Iniciar investigação
+                </button>
+
+                <button onclick="openModal('howto')">
+                    📖 Como funciona
+                </button>
+
+                <button onclick="openModal('sources')">
+                    📚 Fontes
+                </button>
+
+            </div>
+
         </div>
+
     </section>
 
 
-    <!-- JOGO -->
-    <section id="game" class="screen">
+    <!-- =========================
+         COMISSÃO
+    ========================== -->
 
-        <header>
+    <section id="commission" class="screen">
+
+        <header class="topbar">
+
             <div>
-                <span class="small-title">ARQUIVO 1964</span>
-                <h2 id="documentNumber">DOCUMENTO #001</h2>
+
+                <span class="eyebrow">
+                    ARQUIVO 1964
+                </span>
+
+                <h2>
+                    🏛️ Sala da Comissão
+                </h2>
+
             </div>
 
-            <div class="progress-container">
-                <span id="progressText">1 / 8</span>
-                <div class="progress">
-                    <div id="progressBar"></div>
-                </div>
+            <div class="top-actions">
+
+                <button onclick="openModal('howto')">
+                    Regras
+                </button>
+
+                <button onclick="openModal('sources')">
+                    Fontes
+                </button>
+
             </div>
+
         </header>
 
 
-        <main class="game-layout">
+        <div class="paper-card mission">
 
-            <!-- DOCUMENTO -->
-            <div class="document-area">
+            <span class="case-label">
+                MISSÃO DA TURMA
+            </span>
 
-                <div class="document">
-                    <div class="document-top">
-                        <span id="documentDate">1964</span>
-                        <span id="documentContext">DOCUMENTO HISTÓRICO</span>
-                    </div>
+            <h1>
+                Investigar antes de concluir.
+            </h1>
 
-                    <h1 id="documentTitle"></h1>
+            <p>
 
-                    <p id="documentDescription"></p>
+                Vocês são uma comissão investigadora.
 
-                    <div id="investigationBox" class="investigation hidden">
-                        <div class="investigation-title">
-                            🔎 Informação encontrada
-                        </div>
+                Quatro núcleos receberam documentos diferentes.
+                Nenhum grupo possui a história completa.
 
-                        <p id="investigationText"></p>
+                A comissão precisará compartilhar informações,
+                questionar as evidências e registrar também
+                aquilo que ainda não foi possível esclarecer.
 
-                        <div class="clue">
-                            📌 <strong>O que isso revela:</strong>
-                            <span id="clueText"></span>
-                        </div>
-                    </div>
+            </p>
 
-                    <button
-                        id="investigateButton"
-                        onclick="investigate()"
-                        class="investigate-button">
-                        🔎 Investigar documento
-                    </button>
+        </div>
 
-                    <div id="choicesArea" class="choices hidden">
 
-                        <h3>O que você faria?</h3>
+        <!-- ESTATÍSTICAS -->
 
-                        <p class="choice-help">
-                            Sua decisão terá consequências para a comunidade
-                            nesta simulação.
-                        </p>
+        <div class="stats-grid">
 
-                        <div id="choices"></div>
+            <div class="stat">
 
-                    </div>
+                <span id="docsCount">
+                    0
+                </span>
 
-                </div>
+                <small>
+                    documentos analisados
+                </small>
 
             </div>
 
 
-            <!-- LATERAL -->
-            <aside>
+            <div class="stat">
 
-                <div class="panel">
-                    <h3>🧭 Situação da comunidade</h3>
+                <span id="casesCount">
+                    0/4
+                </span>
 
-                    <div class="stat">
-                        <div>
-                            <span>🏞️ Território</span>
-                            <strong id="territoryValue">50</strong>
-                        </div>
-                        <div class="bar">
-                            <div id="territoryBar"></div>
-                        </div>
-                    </div>
+                <small>
+                    casos investigados
+                </small>
 
-                    <div class="stat">
-                        <div>
-                            <span>🛡️ Proteção</span>
-                            <strong id="protectionValue">50</strong>
-                        </div>
-                        <div class="bar">
-                            <div id="protectionBar"></div>
-                        </div>
-                    </div>
-
-                    <div class="stat">
-                        <div>
-                            <span>📚 Documentação</span>
-                            <strong id="documentationValue">50</strong>
-                        </div>
-                        <div class="bar">
-                            <div id="documentationBar"></div>
-                        </div>
-                    </div>
-
-                    <div class="stat">
-                        <div>
-                            <span>🤝 Autonomia</span>
-                            <strong id="autonomyValue">50</strong>
-                        </div>
-                        <div class="bar">
-                            <div id="autonomyBar"></div>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
 
-                <div class="panel">
-                    <h3>🔓 Investigação</h3>
+            <div class="stat">
 
-                    <p>
-                        Documentos investigados:
-                        <strong id="archiveCount">0</strong>
-                    </p>
+                <span id="questionsCount">
+                    0
+                </span>
 
-                    <p>
-                        Nível de investigação:
-                        <strong id="investigationLevel">Inicial</strong>
-                    </p>
+                <small>
+                    questões em aberto
+                </small>
 
-                    <div id="discoveredClues" class="clues">
-                        Nenhuma informação descoberta ainda.
-                    </div>
-                </div>
+            </div>
 
 
-                <div class="panel">
-                    <h3>📌 Registro</h3>
-                    <div id="log" class="log">
-                        A investigação ainda não começou.
-                    </div>
-                </div>
+            <div class="stat">
 
-            </aside>
+                <span id="recsCount">
+                    0
+                </span>
 
-        </main>
+                <small>
+                    recomendações
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <h3 class="section-title">
+            📂 Núcleos de investigação
+        </h3>
+
+
+        <div
+            class="case-grid"
+            id="caseGrid">
+        </div>
+
+
+        <div class="bottom-row">
+
+            <button
+                class="primary"
+                onclick="openDebate()">
+
+                ⚖️ Abrir debate da comissão
+
+            </button>
+
+
+            <button onclick="openModal('roles')">
+
+                👥 Ver funções dos grupos
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="casePanel"
+            class="case-panel hidden">
+        </div>
+
     </section>
 
 
-    <!-- FINAL -->
+    <!-- =========================
+         DEBATE
+    ========================== -->
+
+    <section id="debate" class="screen">
+
+        <header class="topbar">
+
+            <div>
+
+                <span class="eyebrow">
+                    FASE 3
+                </span>
+
+                <h2>
+                    ⚖️ Debate da Comissão
+                </h2>
+
+            </div>
+
+            <button onclick="goTo('commission')">
+                ← Voltar aos casos
+            </button>
+
+        </header>
+
+
+        <div class="paper-card">
+
+            <span class="case-label">
+                REUNIÃO PLENÁRIA
+            </span>
+
+            <h1>
+                O que pode entrar no relatório?
+            </h1>
+
+            <p>
+
+                Agora os quatro núcleos devem discutir
+                como uma única comissão.
+
+                Não é necessário concordar em tudo.
+
+                O importante é justificar as conclusões
+                com as evidências encontradas.
+
+            </p>
+
+
+            <div class="rule-box">
+
+                <strong>Regra:</strong>
+
+                Sempre que alguém fizer uma afirmação importante,
+                o mediador pode perguntar:
+
+                <em>
+                    "Qual documento sustenta essa conclusão?"
+                </em>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="debateQuestions"
+            class="debate-list">
+        </div>
+
+
+        <!-- VOTAÇÃO -->
+
+        <div class="paper-card vote-card">
+
+            <span class="case-label">
+                VOTAÇÃO
+            </span>
+
+            <h2>
+                📜 Quais recomendações devem entrar no relatório?
+            </h2>
+
+            <p>
+                A turma pode escolher até
+                <strong>3 recomendações</strong>.
+            </p>
+
+
+            <div
+                id="recommendations"
+                class="recommendations">
+            </div>
+
+
+            <button
+                class="primary"
+                onclick="finishVote()">
+
+                🗳️ Registrar decisão da comissão
+
+            </button>
+
+
+            <p
+                id="voteMessage"
+                class="message">
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FINAL
+    ========================== -->
+
     <section id="final" class="screen">
 
-        <div class="final-box">
+        <div class="paper-card final-card">
 
-            <div class="stamp">ARQUIVO ENCERRADO</div>
-
-            <h1 id="finalTitle"></h1>
-
-            <div class="final-icon" id="finalIcon"></div>
-
-            <p id="finalText"></p>
-
-            <div class="final-reflection">
-                <h3>💭 O que sua investigação mostrou?</h3>
-                <p id="reflectionText"></p>
+            <div class="stamp">
+                RELATÓRIO FINAL
             </div>
 
-            <div class="final-stats">
+            <p class="eyebrow">
+                COMISSÃO DE INVESTIGAÇÃO — ARQUIVO 1964
+            </p>
 
-                <div>
-                    <span>🏞️ Território</span>
-                    <strong id="finalTerritory"></strong>
-                </div>
 
-                <div>
-                    <span>🛡️ Proteção</span>
-                    <strong id="finalProtection"></strong>
-                </div>
+            <h1 id="finalTitle">
+                O arquivo continua.
+            </h1>
 
-                <div>
-                    <span>📚 Documentação</span>
-                    <strong id="finalDocumentation"></strong>
-                </div>
 
-                <div>
-                    <span>🤝 Autonomia</span>
-                    <strong id="finalAutonomy"></strong>
-                </div>
+            <p
+                id="finalText"
+                class="lead">
+            </p>
+
+
+            <div class="report-box">
+
+                <h3>
+                    📝 O que a comissão conseguiu estabelecer
+                </h3>
+
+                <ul id="finalFindings">
+                </ul>
 
             </div>
 
-            <div class="historical-note">
-                <h3>📚 Contexto histórico</h3>
 
-                <p>
-                    Durante a ditadura militar brasileira, povos indígenas
-                    sofreram diferentes formas de violência e tiveram seus
-                    territórios e modos de vida afetados por políticas e ações
-                    do Estado.
-                </p>
+            <div class="report-box">
 
-                <p>
-                    A Comissão Nacional da Verdade investigou violações de
-                    direitos humanos ocorridas no período e produziu documentos
-                    que hoje ajudam a preservar essa memória.
-                </p>
+                <h3>
+                    ⚠️ O que permaneceu em aberto
+                </h3>
 
-                <p>
-                    Este jogo é uma representação didática. As escolhas feitas
-                    aqui não alteram a história real.
-                </p>
+                <ul id="finalQuestions">
+                </ul>
+
             </div>
 
-            <div class="buttons">
-                <button onclick="restartGame()" class="main-button">
-                    🔄 Investigar novamente
+
+            <div class="report-box">
+
+                <h3>
+                    📜 Recomendações escolhidas
+                </h3>
+
+                <ul id="finalRecommendations">
+                </ul>
+
+            </div>
+
+
+            <div class="closing">
+
+                <strong>
+                    Uma investigação histórica não termina
+                    quando o documento acaba.
+                </strong>
+
+                <br>
+
+                Ela continua quando novas fontes,
+                relatos e pesquisas permitem ampliar
+                o que sabemos.
+
+            </div>
+
+
+            <div class="button-row">
+
+                <button
+                    class="primary"
+                    onclick="restartGame()">
+
+                    🔄 Reiniciar atividade
+
                 </button>
 
-                <button onclick="showSources()" class="secondary-button">
-                    📚 Ver fontes
+
+                <button
+                    onclick="openModal('sources')">
+
+                    📚 Consultar fontes
+
                 </button>
+
             </div>
 
         </div>
 
     </section>
 
+</div>
 
-    <!-- COMO JOGAR -->
-    <div id="howToPlay" class="modal">
 
-        <div class="modal-content">
+<!-- =========================
+     MODAL — COMO FUNCIONA
+========================== -->
 
-            <button class="close" onclick="closeModal('howToPlay')">
-                ×
-            </button>
+<div id="howto" class="modal">
 
-            <h2>📖 Como jogar</h2>
+    <div class="modal-content">
 
-            <p>
-                Você é responsável por investigar uma sequência de documentos.
-            </p>
+        <button
+            class="close"
+            onclick="closeModal('howto')">
+            ×
+        </button>
 
-            <p>
-                Primeiro, leia o documento e clique em
-                <strong>“Investigar documento”</strong>.
-            </p>
 
-            <p>
-                A investigação pode revelar informações que estavam escondidas.
-            </p>
+        <h2>
+            📖 Como funciona
+        </h2>
 
-            <p>
-                Depois, escolha o que fazer.
-            </p>
 
-            <p>
-                Algumas decisões podem melhorar uma situação, enquanto outras
-                podem prejudicar determinados aspectos da comunidade.
-            </p>
+        <h3>
+            1. Dividam a sala
+        </h3>
 
-            <p>
-                Quanto mais você investiga, mais informações consegue reunir.
-                Isso pode liberar opções diferentes em documentos posteriores.
-            </p>
+        <p>
+            Formem 4 núcleos de aproximadamente 7 alunos.
+        </p>
 
-            <p>
-                No final, suas decisões determinarão qual situação a comunidade
-                enfrentará dentro da simulação.
-            </p>
 
-            <button onclick="closeModal('howToPlay')" class="main-button">
-                Entendi
-            </button>
+        <h3>
+            2. Distribuam as funções
+        </h3>
+
+        <p>
+            Coordenador, leitor, analista de evidências,
+            verificador, relator, questionador e porta-voz.
+        </p>
+
+
+        <h3>
+            3. Investiguem
+        </h3>
+
+        <p>
+            Cada núcleo começa com documentos diferentes.
+            Leiam, comparem e anotem o que pode ser afirmado
+            e o que continua sendo dúvida.
+        </p>
+
+
+        <h3>
+            4. Compartilhem
+        </h3>
+
+        <p>
+            Apresentem as descobertas para a sala.
+            Os outros grupos podem questionar.
+        </p>
+
+
+        <h3>
+            5. Desbloqueiem
+        </h3>
+
+        <p>
+            Depois das primeiras apresentações,
+            novos documentos ficam disponíveis.
+        </p>
+
+
+        <h3>
+            6. Debatam e votem
+        </h3>
+
+        <p>
+            A sala inteira participa do debate
+            e escolhe até três recomendações
+            para o relatório final.
+        </p>
+
+
+        <div class="warning">
+
+            O jogo não possui uma "pontuação de justiça".
+
+            A atividade é sobre investigação,
+            argumentação e análise de fontes,
+            não sobre uma disputa entre grupos.
 
         </div>
 
     </div>
 
+</div>
 
-    <!-- FONTES -->
-    <div id="sources" class="modal">
 
-        <div class="modal-content">
+<!-- =========================
+     MODAL — FUNÇÕES
+========================== -->
 
-            <button class="close" onclick="closeModal('sources')">
-                ×
-            </button>
+<div id="roles" class="modal">
 
-            <h2>📚 Fontes utilizadas</h2>
+    <div class="modal-content">
 
-            <p>
-                O conteúdo histórico do jogo foi inspirado em documentos e
-                informações disponibilizados por instituições públicas.
-            </p>
+        <button
+            class="close"
+            onclick="closeModal('roles')">
+            ×
+        </button>
 
-            <ul>
-                <li>Arquivo Nacional — Acervos sobre o Regime Militar (1964–1985)</li>
-                <li>Memórias Reveladas — Comissão Nacional da Verdade</li>
-                <li>Relatório Final da Comissão Nacional da Verdade</li>
-                <li>Documentação sobre povos indígenas no acervo da CNV</li>
-            </ul>
 
-            <p>
-                Os acontecimentos apresentados no jogo foram adaptados para
-                uma experiência educativa e não devem ser interpretados como
-                documentos históricos originais.
-            </p>
+        <h2>
+            👥 Funções dos grupos
+        </h2>
 
-            <button onclick="closeModal('sources')" class="main-button">
-                Fechar
-            </button>
 
-        </div>
+        <ol class="role-list">
+
+            <li>
+                <strong>Coordenador:</strong>
+                organiza o tempo e a discussão.
+            </li>
+
+            <li>
+                <strong>Leitor:</strong>
+                lê os documentos.
+            </li>
+
+            <li>
+                <strong>Analista:</strong>
+                identifica o que a fonte realmente mostra.
+            </li>
+
+            <li>
+                <strong>Verificador:</strong>
+                procura confirmação,
+                contradição ou lacunas.
+            </li>
+
+            <li>
+                <strong>Relator:</strong>
+                registra as conclusões.
+            </li>
+
+            <li>
+                <strong>Questionador:</strong>
+                procura dúvidas.
+            </li>
+
+            <li>
+                <strong>Porta-voz:</strong>
+                apresenta o grupo à comissão.
+            </li>
+
+        </ol>
 
     </div>
 
+</div>
 
-    <script src="./script.js"></script>
+
+<!-- =========================
+     MODAL — FONTES
+========================== -->
+
+<div id="sources" class="modal">
+
+    <div class="modal-content wide">
+
+        <button
+            class="close"
+            onclick="closeModal('sources')">
+            ×
+        </button>
+
+
+        <h2>
+            📚 Fontes utilizadas
+        </h2>
+
+
+        <p>
+
+            Os textos dos documentos do jogo são
+            adaptações didáticas.
+
+            As fontes abaixo foram utilizadas para
+            construir o conteúdo histórico.
+
+        </p>
+
+
+        <div class="source-item">
+
+            <strong>
+                1. Lei nº 12.528/2011 —
+                Presidência da República
+            </strong>
+
+            <p>
+                Lei que criou a Comissão Nacional da Verdade.
+            </p>
+
+            <a
+                href="https://planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12528.htm"
+                target="_blank">
+
+                Abrir fonte oficial
+
+            </a>
+
+        </div>
+
+
+        <div class="source-item">
+
+            <strong>
+                2. Arquivo Nacional —
+                Acervos sobre o Regime Militar (1964–1985)
+            </strong>
+
+            <p>
+                Informações sobre os acervos do período
+                e da Comissão Nacional da Verdade.
+            </p>
+
+            <a
+                href="https://www.gov.br/arquivonacional/pt-br/servicos/acervos/copy_of_acervos-mais-consultados/acervos-sobre-o-regime-militar-1964-1985"
+                target="_blank">
+
+                Abrir fonte oficial
+
+            </a>
+
+        </div>
+
+
+        <div class="source-item">
+
+            <strong>
+                3. Memórias Reveladas —
+                Comissão Nacional da Verdade
+            </strong>
+
+            <p>
+                Informações institucionais sobre a CNV
+                e seus relatórios.
+            </p>
+
+            <a
+                href="https://www.gov.br/memoriasreveladas/pt-br/assuntos/comissoes-da-verdade/cnv"
+                target="_blank">
+
+                Abrir fonte oficial
+
+            </a>
+
+        </div>
+
+
+        <div class="source-item">
+
+            <strong>
+                4. Memórias Reveladas —
+                Ditadura e genocídio indígena
+            </strong>
+
+            <p>
+                Material sobre violações contra
+                povos indígenas durante a ditadura.
+            </p>
+
+            <a
+                href="https://www.gov.br/memoriasreveladas/pt-br/centrais-de-conteudo/destaques/ditadura-e-genocidio-indigena"
+                target="_blank">
+
+                Abrir fonte oficial
+
+            </a>
+
+        </div>
+
+
+        <div class="source-item">
+
+            <strong>
+                5. Memórias Reveladas —
+                Krenak e cadeias indígenas
+            </strong>
+
+            <p>
+                Material sobre o Reformatório Krenak
+                e a Fazenda Guarani, em Minas Gerais.
+            </p>
+
+            <a
+                href="https://www.gov.br/memoriasreveladas/pt-br/assuntos/noticias/tese-da-antropologia-resgata-historia-das-cadeias-indigenas-da-ditadura-militar"
+                target="_blank">
+
+                Abrir fonte oficial
+
+            </a>
+
+        </div>
+
+
+        <div class="source-item">
+
+            <strong>
+                6. Memórias Reveladas —
+                Alto Rio Negro
+            </strong>
+
+            <p>
+                Material sobre militarização,
+                infraestrutura e impactos territoriais.
+            </p>
+
+            <a
+                href="https://www.gov.br/memoriasreveladas/pt-br/assuntos/noticias/territorios-indigenas-convertidos-em-interesse-estrategico-militar-levaram-morte-e-devastacao-para-o-alto-rio-negro"
+                target="_blank">
+
+                Abrir fonte oficial
+
+            </a>
+
+        </div>
+
+
+        <div class="source-item">
+
+            <strong>
+                7. Relatório Final da CNV —
+                Volume II
+            </strong>
+
+            <p>
+                Relatório com capítulos sobre graves
+                violações contra povos indígenas.
+            </p>
+
+            <a
+                href="https://www.gov.br/memoriasreveladas/pt-br/assuntos/comissoes-da-verdade/volume_2_digital.pdf"
+                target="_blank">
+
+                Abrir relatório
+
+            </a>
+
+        </div>
+
+
+        <div class="source-item">
+
+            <strong>
+                8. Memórias Reveladas —
+                Vítimas indígenas na ditadura
+            </strong>
+
+            <p>
+                Material sobre dados e limitações
+                da investigação da CNV.
+            </p>
+
+            <a
+                href="https://www.gov.br/memoriasreveladas/pt-br/assuntos/noticias/vitimas-de-tortura-indigenas-ainda-sentem-violacoes-sofridas-na-ditadura"
+                target="_blank">
+
+                Abrir fonte oficial
+
+            </a>
+
+        </div>
+
+
+        <p class="source-note">
+
+            Fontes consultadas em setembro de 2026.
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<script src="./script.js"></script>
 
 </body>
 </html>
