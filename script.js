@@ -1,78 +1,82 @@
-/* =====================================================
-   ARQUIVO 1964
-   Investigação e decisões
-===================================================== */
-
-
-/* =====================================================
-   ESTADO DO JOGO
-===================================================== */
-
-let currentStage = 0;
-
-let stats = {
-    territory: 50,
-    protection: 50,
-    documentation: 50,
-    autonomy: 50
-};
-
-let investigated = false;
-
-let discoveredClues = [];
-
-let history = [];
-
-
-/* =====================================================
-   DOCUMENTOS
-===================================================== */
-
-const stages = [
+const cases = [
 
     {
-        number: "DOCUMENTO #001",
-        date: "1964",
-        context: "Início de um novo período",
+        id: "krenak",
 
-        title: "Uma mudança chega ao território",
+        number: "CASO 01",
 
-        description:
-            "Os primeiros registros encontrados mostram que o país entrou em um novo período político. Para uma comunidade indígena, porém, as mudanças que aparecem nos documentos parecem distantes da vida cotidiana. O que importa é entender como as decisões tomadas fora da comunidade podem afetar seu território e sua forma de viver.",
+        title: "Povo Krenak",
 
-        investigation:
-            "Entre os papéis há referências a novas decisões políticas e administrativas. O documento não explica diretamente o que acontecerá com a comunidade, mas deixa claro que decisões externas poderão interferir em seu território.",
+        icon: "🟦",
 
-        clue:
-            "As decisões tomadas por autoridades podem produzir consequências concretas para comunidades que não participaram dessas decisões.",
+        theme:
+            "Território, confinamento e controle",
 
-        choices: [
+        summary:
+            "Investigar documentos relacionados ao Reformatório Krenak e à Fazenda Guarani, em Minas Gerais.",
+
+        source:
+            "Memórias Reveladas / Arquivo Nacional",
+
+        documents: [
 
             {
-                text: "Registrar cuidadosamente o que está acontecendo.",
-                detail:
-                    "A informação pode ser importante para compreender os próximos acontecimentos.",
+                id: "K-01",
 
-                effects: {
-                    documentation: 10
-                },
+                type:
+                    "REGISTRO INSTITUCIONAL — ADAPTADO",
 
-                message:
-                    "Você decidiu preservar o registro. Agora existe uma memória documentada do que estava acontecendo."
+                title:
+                    "Uma instituição de confinamento",
+
+                text:
+                    "Documentos históricos analisados por pesquisadores indicam que, no final da década de 1960, indígenas Krenak e pessoas de outros povos foram submetidos a uma instituição de confinamento em Minas Gerais, conhecida posteriormente como Reformatório Krenak.",
+
+                analysis:
+                    "A fonte permite investigar a existência da instituição e seu funcionamento. Ela não deve ser usada isoladamente para reconstruir todos os acontecimentos.",
+
+                source:
+                    "Fonte-base: Memórias Reveladas — cadeias indígenas da ditadura."
             },
 
+
             {
-                text: "Tentar proteger imediatamente o território.",
-                detail:
-                    "A prioridade passa a ser evitar que mudanças externas afetem o espaço da comunidade.",
+                id: "K-02",
 
-                effects: {
-                    territory: 8,
-                    protection: 5
-                },
+                type:
+                    "REGISTRO SOBRE TRANSFERÊNCIA — ADAPTADO",
 
-                message:
-                    "A comunidade passa a concentrar esforços na proteção de seu território."
+                title:
+                    "Da região do Krenak à Fazenda Guarani",
+
+                text:
+                    "Registros e pesquisas posteriores indicam que, em 1972, indígenas que estavam no primeiro local de confinamento foram deslocados para a Fazenda Guarani, em Carmésia, Minas Gerais.",
+
+                analysis:
+                    "Este documento complementa o primeiro: mostra que a investigação precisa considerar mais de um local e mais de um momento.",
+
+                source:
+                    "Fonte-base: Memórias Reveladas / UFMG Educativa."
+            },
+
+
+            {
+                id: "K-03",
+
+                type:
+                    "PESQUISA POSTERIOR — ADAPTADA",
+
+                title:
+                    "Uma história que continua sendo investigada",
+
+                text:
+                    "Pesquisas posteriores reuniram entrevistas, análise de construções remanescentes e documentos para ampliar o conhecimento sobre as chamadas cadeias indígenas.",
+
+                analysis:
+                    "A existência de pesquisas posteriores mostra como diferentes fontes podem ampliar uma investigação histórica.",
+
+                source:
+                    "Fonte-base: Memórias Reveladas / UFMG Educativa."
             }
 
         ]
@@ -80,49 +84,87 @@ const stages = [
 
 
     {
-        number: "DOCUMENTO #002",
-        date: "1967",
-        context: "O território entra em disputa",
+        id: "alto-rio-negro",
 
-        title: "Uma área que não parece mais segura",
+        number: "CASO 02",
 
-        description:
-            "Um relatório menciona que uma área tradicionalmente utilizada pela comunidade passou a receber atenção de autoridades e outros interesses externos. As pessoas da comunidade percebem que aquilo que sempre fizeram naquele espaço pode começar a ser questionado.",
+        title:
+            "Alto Rio Negro",
 
-        investigation:
-            "Ao comparar os documentos, você percebe que o problema não é apenas uma mudança no mapa. A utilização do território está ligada à sobrevivência, à cultura e à organização da comunidade.",
+        icon:
+            "🟩",
 
-        clue:
-            "Território não representa apenas espaço físico: ele está relacionado à vida social e cultural da comunidade.",
+        theme:
+            "Militarização, infraestrutura e território",
 
-        choices: [
+        summary:
+            "Investigar os efeitos de políticas estratégicas, obras e presença militar sobre comunidades indígenas.",
+
+        source:
+            "Memórias Reveladas",
+
+        documents: [
 
             {
-                text: "Reunir documentos que comprovem a relação da comunidade com o território.",
-                detail:
-                    "Registrar essa relação pode fortalecer a memória e a documentação.",
+                id:
+                    "R-01",
 
-                effects: {
-                    documentation: 8,
-                    territory: 6
-                },
+                type:
+                    "REGISTRO TERRITORIAL — ADAPTADO",
 
-                message:
-                    "Você começa a reunir evidências sobre a relação histórica da comunidade com aquele território."
+                title:
+                    "Uma região considerada estratégica",
+
+                text:
+                    "Durante a ditadura, o Alto Rio Negro, no noroeste do Amazonas, foi tratado como uma área estratégica por sua localização próxima às fronteiras com Colômbia e Venezuela.",
+
+                analysis:
+                    "O documento ajuda a explicar por que a região passou a receber atenção militar e estatal, mas não descreve sozinho todas as consequências para as comunidades.",
+
+                source:
+                    "Fonte-base: Memórias Reveladas — Alto Rio Negro."
             },
 
+
             {
-                text: "Aceitar a mudança para evitar um conflito.",
-                detail:
-                    "A decisão evita uma confrontação imediata, mas pode deixar o território mais vulnerável.",
+                id:
+                    "R-02",
 
-                effects: {
-                    territory: -12,
-                    autonomy: -5
-                },
+                type:
+                    "REGISTRO DE INFRAESTRUTURA — ADAPTADO",
 
-                message:
-                    "A mudança acontece. A comunidade evita um conflito imediato, mas perde parte do controle sobre seu espaço."
+                title:
+                    "Estradas, postos e presença militar",
+
+                text:
+                    "Entre 1972 e 1975, registros citados em pesquisas apontam para a instalação de postos da Funai, presença de militares e trabalhadores ligados a obras como a abertura da BR-307 e de trecho da Perimetral Norte.",
+
+                analysis:
+                    "O cruzamento de documentos territoriais e registros de infraestrutura permite investigar como projetos nacionais atingiram uma região habitada por povos indígenas.",
+
+                source:
+                    "Fonte-base: Memórias Reveladas — Alto Rio Negro."
+            },
+
+
+            {
+                id:
+                    "R-03",
+
+                type:
+                    "RELATO DE IMPACTOS — ADAPTADO",
+
+                title:
+                    "Quando o projeto altera o território",
+
+                text:
+                    "A documentação reunida pelo Memórias Reveladas relaciona a militarização e grandes empreendimentos da região a deslocamentos de comunidades e violações de direitos.",
+
+                analysis:
+                    "Aqui a comissão precisa relacionar os documentos, em vez de tratar cada acontecimento como algo isolado.",
+
+                source:
+                    "Fonte-base: Memórias Reveladas — Alto Rio Negro."
             }
 
         ]
@@ -130,48 +172,89 @@ const stages = [
 
 
     {
-        number: "DOCUMENTO #003",
-        date: "1969",
-        context: "Uma informação escondida",
+        id:
+            "kaiowa-guarani",
 
-        title: "O relatório que ficou de lado",
+        number:
+            "CASO 03",
 
-        description:
-            "Entre vários documentos administrativos existe um relatório que quase passou despercebido. Ele contém informações sobre problemas enfrentados por indígenas, mas não parece ter recebido a mesma atenção que outros documentos.",
+        title:
+            "Kaiowá e Guarani",
 
-        investigation:
-            "O relatório mostra que havia informações circulando sobre situações enfrentadas pelos povos indígenas. Encontrar o documento muda a compreensão do que estava acontecendo.",
+        icon:
+            "🟨",
 
-        clue:
-            "Documentar acontecimentos pode ser fundamental para que situações esquecidas sejam conhecidas posteriormente.",
+        theme:
+            "Território, deslocamentos e resistência",
 
-        choices: [
+        summary:
+            "Investigar documentos sobre disputas territoriais e as formas de permanência e reivindicação das comunidades.",
+
+        source:
+            "Relatório Final da CNV — Volume II",
+
+        documents: [
 
             {
-                text: "Guardar uma cópia do relatório no arquivo da investigação.",
-                detail:
-                    "A prioridade é garantir que a informação não desapareça.",
+                id:
+                    "G-01",
 
-                effects: {
-                    documentation: 15
-                },
+                type:
+                    "REGISTRO TERRITORIAL — ADAPTADO",
 
-                message:
-                    "O relatório agora faz parte do arquivo. Uma informação que poderia ser esquecida foi preservada."
+                title:
+                    "Territórios e decisões administrativas",
+
+                text:
+                    "O relatório final da CNV registra situações em que direitos territoriais indígenas foram restringidos e discute decisões administrativas relacionadas a áreas ocupadas por povos indígenas.",
+
+                analysis:
+                    "O documento não deve ser lido como se explicasse sozinho todos os conflitos territoriais. A investigação precisa considerar contexto e outras fontes.",
+
+                source:
+                    "Fonte-base: Relatório Final da CNV — Volume II."
             },
 
+
             {
-                text: "Usar o relatório para pressionar por medidas de proteção.",
-                detail:
-                    "A informação deixa de ser apenas um registro e passa a orientar uma ação.",
+                id:
+                    "G-02",
 
-                effects: {
-                    protection: 12,
-                    documentation: 5
-                },
+                type:
+                    "REGISTRO DE REIVINDICAÇÃO — ADAPTADO",
 
-                message:
-                    "As informações reunidas começam a ser utilizadas para tentar aumentar a proteção da comunidade."
+                title:
+                    "A busca pelo território",
+
+                text:
+                    "O relatório da CNV registra reivindicações de lideranças Kaiowá e Guarani relacionadas à demarcação de terras e mostra como essas demandas foram levadas a órgãos públicos.",
+
+                analysis:
+                    "A fonte mostra que as comunidades não aparecem apenas como objeto das políticas estatais: suas próprias reivindicações também fazem parte da documentação.",
+
+                source:
+                    "Fonte-base: Relatório Final da CNV — Volume II."
+            },
+
+
+            {
+                id:
+                    "G-03",
+
+                type:
+                    "CRUZAMENTO DE FONTES — ADAPTADO",
+
+                title:
+                    "Uma história que não termina no documento",
+
+                text:
+                    "Documentos e pesquisas posteriores permitem acompanhar a continuidade das reivindicações territoriais e ajudam a investigar os efeitos de decisões tomadas durante o período da ditadura.",
+
+                analysis:
+                    "A comissão deve distinguir o que é evidência sobre o período investigado do que é consequência ou pesquisa posterior.",
+
+                source:
+                    "Fonte-base: Relatório Final da CNV — Volume II e Memórias Reveladas."
             }
 
         ]
@@ -179,250 +262,89 @@ const stages = [
 
 
     {
-        number: "DOCUMENTO #004",
-        date: "1970",
-        context: "Uma escolha importante",
+        id:
+            "lacunas",
 
-        title: "Quem deve decidir?",
+        number:
+            "CASO 04",
 
-        description:
-            "Você encontra registros sobre decisões tomadas a respeito da comunidade. Em nenhum momento aparece claramente a participação das próprias pessoas afetadas.",
+        title:
+            "Documentação e lacunas",
 
-        investigation:
-            "Uma anotação chama sua atenção: as decisões parecem estar sendo tomadas por pessoas de fora da comunidade.",
+        icon:
+            "🟥",
 
-        clue:
-            "Investigar também significa perguntar quem está sendo ouvido antes de uma decisão ser tomada.",
+        theme:
+            "Memória, evidências e aquilo que ainda não sabemos",
 
-        choices: [
+        summary:
+            "Investigar os limites da documentação e discutir como uma comissão deve lidar com casos incompletos.",
+
+        source:
+            "Memórias Reveladas / CNV",
+
+        documents: [
 
             {
-                text: "Defender a participação da própria comunidade.",
-                detail:
-                    "As pessoas diretamente afetadas devem ter espaço para expressar suas necessidades.",
+                id:
+                    "M-01",
 
-                effects: {
-                    autonomy: 15,
-                    protection: 5
-                },
+                type:
+                    "RELATÓRIO DA CNV — ADAPTADO",
 
-                message:
-                    "A comunidade ganha mais espaço para participar das decisões que afetam sua própria vida."
+                title:
+                    "O que foi investigado",
+
+                text:
+                    "O relatório final da Comissão Nacional da Verdade reuniu informações sobre graves violações de direitos humanos sofridas por diferentes povos indígenas durante o período investigado.",
+
+                analysis:
+                    "A comissão histórica reuniu informações de diferentes fontes. O nosso jogo usa apenas uma pequena parte desse universo.",
+
+                source:
+                    "Fonte-base: Memórias Reveladas — CNV."
             },
 
-            {
-                text: "Deixar as autoridades decidirem o que fazer.",
-                detail:
-                    "A decisão pode parecer mais rápida, mas reduz a participação da comunidade.",
-
-                effects: {
-                    autonomy: -12
-                },
-
-                message:
-                    "As decisões continuam sendo tomadas principalmente por pessoas de fora da comunidade."
-            }
-
-        ]
-    },
-
-
-    {
-        number: "DOCUMENTO #005",
-        date: "1972",
-        context: "Uma nova pista",
-
-        title: "O documento que conecta tudo",
-
-        description:
-            "Você percebe que vários acontecimentos que pareciam separados podem estar relacionados. Um documento menciona território, outro fala sobre proteção e outro registra informações sobre a comunidade.",
-
-        investigation:
-            "Ao comparar os documentos anteriores, você consegue enxergar uma relação entre eles. A investigação deixou de ser apenas uma coleção de papéis: agora existe uma história sendo reconstruída.",
-
-        clue:
-            "Relacionar documentos diferentes pode revelar uma situação que não aparece em nenhum documento isoladamente.",
-
-        choices: [
 
             {
-                text: "Comparar todos os documentos antes de decidir.",
-                detail:
-                    "Você tenta entender o contexto completo antes de tomar uma decisão.",
+                id:
+                    "M-02",
 
-                effects: {
-                    documentation: 8,
-                    autonomy: 5,
-                    protection: 5
-                },
+                type:
+                    "DADO SOBRE A PESQUISA — ADAPTADO",
 
-                message:
-                    "Você decide não agir com pressa. Os documentos são comparados antes de uma nova decisão."
+                title:
+                    "Uma investigação com limites",
+
+                text:
+                    "Material do Memórias Reveladas informa que a CNV identificou graves violações contra dez povos indígenas em seu levantamento e registrou pelo menos 8.350 indígenas mortos entre 1964 e 1984. O próprio material ressalta que apenas uma parcela dos povos foi estudada.",
+
+                analysis:
+                    "Esse dado não deve ser tratado como um número definitivo de todas as mortes indígenas do período. Ele mostra também a existência de lacunas na investigação.",
+
+                source:
+                    "Fonte-base: Memórias Reveladas — vítimas indígenas na ditadura."
             },
 
-            {
-                text: "Agir imediatamente com as informações disponíveis.",
-                detail:
-                    "A ação é mais rápida, mas algumas informações ainda não foram analisadas.",
-
-                effects: {
-                    protection: 8,
-                    documentation: -5
-                },
-
-                message:
-                    "Uma ação rápida é tomada. Ela pode ajudar, mas algumas informações ainda ficaram sem análise."
-            }
-
-        ]
-    },
-
-
-    {
-        number: "DOCUMENTO #006",
-        date: "1975",
-        context: "A memória da comunidade",
-
-        title: "Uma história contada por quem viveu",
-
-        description:
-            "Você encontra relatos que mostram a importância da memória das próprias pessoas da comunidade. Os documentos oficiais contam apenas uma parte da história.",
-
-        investigation:
-            "A nova informação mostra que documentos administrativos não são suficientes para reconstruir toda uma história. As experiências das próprias comunidades também são importantes.",
-
-        clue:
-            "A memória de quem viveu os acontecimentos ajuda a complementar os registros oficiais.",
-
-        choices: [
 
             {
-                text: "Registrar os relatos da comunidade.",
-                detail:
-                    "A investigação passa a considerar também a memória das pessoas afetadas.",
+                id:
+                    "M-03",
 
-                effects: {
-                    documentation: 10,
-                    autonomy: 10
-                },
+                type:
+                    "PESQUISA POSTERIOR — ADAPTADA",
 
-                message:
-                    "Os relatos da comunidade passam a fazer parte da memória preservada."
-            },
+                title:
+                    "O arquivo pode crescer",
 
-            {
-                text: "Usar somente os documentos oficiais.",
-                detail:
-                    "Isso mantém o arquivo mais limitado ao que foi registrado pelas autoridades.",
+                text:
+                    "Novas pesquisas, documentos, depoimentos e acervos podem ampliar o conhecimento sobre acontecimentos que não foram completamente esclarecidos pela CNV.",
 
-                effects: {
-                    documentation: 4,
-                    autonomy: -8
-                },
+                analysis:
+                    "Registrar uma lacuna não significa dizer que nada aconteceu. Significa deixar claro que a documentação disponível não permite uma conclusão completa.",
 
-                message:
-                    "A investigação continua, mas parte das experiências da própria comunidade fica fora do arquivo."
-            }
-
-        ]
-    },
-
-
-    {
-        number: "DOCUMENTO #007",
-        date: "1978",
-        context: "Uma oportunidade",
-
-        title: "Agora você conhece a história",
-
-        description:
-            "Depois de investigar vários documentos, você já consegue compreender muito melhor a situação. Mas ainda existe uma escolha: usar o conhecimento reunido para tentar melhorar a situação ou simplesmente encerrar o arquivo.",
-
-        investigation:
-            "Você percebe que as decisões anteriores construíram o caminho até aqui. O resultado não depende de uma única escolha.",
-
-        clue:
-            "As consequências de uma situação histórica podem ser resultado de várias decisões acumuladas.",
-
-        choices: [
-
-            {
-                text: "Usar tudo o que foi descoberto para fortalecer a comunidade.",
-                detail:
-                    "A investigação é transformada em uma tentativa de melhorar a situação.",
-
-                effects: {
-                    territory: 7,
-                    protection: 10,
-                    autonomy: 8
-                },
-
-                message:
-                    "Tudo o que você descobriu começa a ser utilizado para fortalecer a comunidade."
-            },
-
-            {
-                text: "Encerrar a investigação e apenas guardar os documentos.",
-                detail:
-                    "A memória é preservada, mas poucas ações são tomadas.",
-
-                effects: {
-                    documentation: 12
-                },
-
-                message:
-                    "Os documentos são preservados. A história continuará registrada, mas poucas mudanças acontecem."
-            }
-
-        ]
-    },
-
-
-    {
-        number: "DOCUMENTO #008",
-        date: "1985",
-        context: "O fim de um período",
-
-        title: "O arquivo chega ao fim",
-
-        description:
-            "O período da ditadura militar chega ao fim. Você olha para todos os documentos reunidos e percebe que a história não pode ser resumida em uma única decisão.",
-
-        investigation:
-            "Ao reunir tudo, você percebe que cada escolha feita durante a investigação alterou o cenário da simulação. Agora resta descobrir qual situação foi construída ao longo do caminho.",
-
-        clue:
-            "A memória histórica é construída a partir de diferentes documentos, experiências e perspectivas.",
-
-        choices: [
-
-            {
-                text: "Preservar o arquivo e deixar a história disponível para o futuro.",
-                detail:
-                    "O objetivo final é garantir que as informações descobertas continuem acessíveis.",
-
-                effects: {
-                    documentation: 10,
-                    autonomy: 5
-                },
-
-                message:
-                    "O arquivo é preservado para que outras pessoas possam conhecer essa história."
-            },
-
-            {
-                text: "Priorizar a situação atual da comunidade.",
-                detail:
-                    "A investigação termina concentrando-se nas condições construídas ao longo da história.",
-
-                effects: {
-                    territory: 5,
-                    protection: 5,
-                    autonomy: 5
-                },
-
-                message:
-                    "A investigação termina com atenção às condições que a comunidade conseguiu preservar."
+                source:
+                    "Fonte-base: Arquivo Nacional / Memórias Reveladas."
             }
 
         ]
@@ -431,609 +353,1036 @@ const stages = [
 ];
 
 
-/* =====================================================
+const recommendations = [
+
+    "Ampliar a investigação documental sobre casos ainda incompletos.",
+
+    "Preservar e disponibilizar os documentos utilizados na investigação.",
+
+    "Registrar no relatório os impactos territoriais identificados nas fontes.",
+
+    "Buscar depoimentos e outras fontes para complementar os registros escritos.",
+
+    "Deixar explícitas as lacunas e limites da documentação encontrada.",
+
+    "Continuar investigando casos que não puderam ser completamente esclarecidos."
+
+];
+
+
+const debateQuestions = [
+
+    [
+        "Território",
+
+        "Quando documentos indicam mudanças territoriais, deslocamentos ou restrições de direitos, como isso deve aparecer no relatório?"
+    ],
+
+    [
+        "Responsabilidade",
+
+        "Quando diferentes instituições e agentes aparecem nos documentos, a comissão deve apenas registrar os acontecimentos ou também investigar responsabilidades? Qual evidência sustenta a posição?"
+    ],
+
+    [
+        "Lacunas",
+
+        "Se a comissão não encontrou documentação suficiente sobre determinado acontecimento, isso significa que o acontecimento não ocorreu? Como registrar uma questão inconclusiva?"
+    ],
+
+    [
+        "Memória",
+
+        "Que outros tipos de fonte podem complementar documentos oficiais: depoimentos, mapas, fotografias, pesquisas acadêmicas, registros comunitários ou outros acervos?"
+    ]
+
+];
+
+
+let state = {
+
+    investigated: {},
+
+    revealed: {},
+
+    analyzedDocuments: 0,
+
+    openQuestions: 0,
+
+    recommendations: [],
+
+    completedCases: new Set()
+
+};
+
+
+/* =========================
    INÍCIO
-===================================================== */
+========================= */
 
 function startGame() {
 
-    document.getElementById("menu").classList.remove("active");
-    document.getElementById("game").classList.add("active");
+    resetState();
 
-    resetGame();
+    goTo("commission");
 
-    renderStage();
+    renderCases();
+
+    updateStats();
+
 }
 
 
-function resetGame() {
+/* =========================
+   RESET
+========================= */
 
-    currentStage = 0;
+function resetState() {
 
-    stats = {
-        territory: 50,
-        protection: 50,
-        documentation: 50,
-        autonomy: 50
+    state = {
+
+        investigated: {},
+
+        revealed: {},
+
+        analyzedDocuments: 0,
+
+        openQuestions: 0,
+
+        recommendations: [],
+
+        completedCases: new Set()
+
     };
 
-    investigated = false;
-
-    discoveredClues = [];
-
-    history = [];
-
-    updateIndicators();
-    updateSidebars();
 }
 
 
-/* =====================================================
-   RENDER DOCUMENTO
-===================================================== */
+/* =========================
+   TROCAR TELA
+========================= */
 
-function renderStage() {
+function goTo(id) {
 
-    const stage = stages[currentStage];
+    document
+        .querySelectorAll(".screen")
+        .forEach(screen => {
 
-    investigated = false;
+            screen.classList.remove("active");
 
-    document.getElementById("documentNumber").textContent =
-        stage.number;
+        });
 
-    document.getElementById("documentDate").textContent =
-        stage.date;
 
-    document.getElementById("documentContext").textContent =
-        stage.context;
-
-    document.getElementById("documentTitle").textContent =
-        stage.title;
-
-    document.getElementById("documentDescription").textContent =
-        stage.description;
-
-    document.getElementById("investigationText").textContent =
-        stage.investigation;
-
-    document.getElementById("clueText").textContent =
-        stage.clue;
-
-    document.getElementById("investigationBox")
-        .classList.add("hidden");
-
-    document.getElementById("choicesArea")
-        .classList.add("hidden");
-
-    document.getElementById("investigateButton")
-        .classList.remove("hidden");
-
-    const choicesContainer =
-        document.getElementById("choices");
-
-    choicesContainer.innerHTML = "";
-
-    stage.choices.forEach((choice, index) => {
-
-        const button = document.createElement("button");
-
-        button.className = "choice";
-
-        button.innerHTML = `
-            <strong>${choice.text}</strong>
-            <small>${choice.detail}</small>
-        `;
-
-        button.onclick = () => makeDecision(index);
-
-        choicesContainer.appendChild(button);
-    });
-
-
-    const progress =
-        ((currentStage) / stages.length) * 100;
-
-    document.getElementById("progressBar")
-        .style.width = `${progress}%`;
-
-    document.getElementById("progressText")
-        .textContent =
-        `${currentStage + 1} / ${stages.length}`;
-
-
-    updateIndicators();
-    updateSidebars();
-}
-
-
-/* =====================================================
-   INVESTIGAR
-===================================================== */
-
-function investigate() {
-
-    if (investigated) return;
-
-    investigated = true;
-
-    const stage = stages[currentStage];
-
-    document.getElementById("investigationBox")
-        .classList.remove("hidden");
-
-    document.getElementById("choicesArea")
-        .classList.remove("hidden");
-
-    document.getElementById("investigateButton")
-        .classList.add("hidden");
-
-    discoveredClues.push({
-        number: stage.number,
-        clue: stage.clue
-    });
-
-    addLog(
-        `Você investigou ${stage.number} e encontrou uma nova informação.`
-    );
-
-    updateSidebars();
-}
-
-
-/* =====================================================
-   DECISÃO
-===================================================== */
-
-function makeDecision(choiceIndex) {
-
-    if (!investigated) return;
-
-    const choice =
-        stages[currentStage].choices[choiceIndex];
-
-    applyEffects(choice.effects);
-
-    addLog(choice.message);
-
-    showMessage(choice.message);
-
-    setTimeout(() => {
-
-        if (currentStage < stages.length - 1) {
-
-            currentStage++;
-
-            renderStage();
-
-        } else {
-
-            showFinal();
-
-        }
-
-    }, 1000);
-}
-
-
-/* =====================================================
-   APLICAR CONSEQUÊNCIAS
-===================================================== */
-
-function applyEffects(effects) {
-
-    for (const key in effects) {
-
-        stats[key] += effects[key];
-
-        stats[key] =
-            Math.max(0, Math.min(100, stats[key]));
-    }
-
-    updateIndicators();
-}
-
-
-/* =====================================================
-   INDICADORES
-===================================================== */
-
-function updateIndicators() {
-
-    setValue("territory");
-    setValue("protection");
-    setValue("documentation");
-    setValue("autonomy");
-}
-
-
-function setValue(name) {
-
-    const value = stats[name];
-
-    document.getElementById(name + "Value")
-        .textContent = value;
-
-    document.getElementById(name + "Bar")
-        .style.width = value + "%";
-}
-
-
-/* =====================================================
-   SIDEBAR
-===================================================== */
-
-function updateSidebars() {
-
-    document.getElementById("archiveCount")
-        .textContent = discoveredClues.length;
-
-    let level = "Inicial";
-
-    if (discoveredClues.length >= 6) {
-        level = "Avançado";
-    } else if (discoveredClues.length >= 3) {
-        level = "Intermediário";
-    }
-
-    document.getElementById("investigationLevel")
-        .textContent = level;
-
-
-    const cluesContainer =
-        document.getElementById("discoveredClues");
-
-    if (discoveredClues.length === 0) {
-
-        cluesContainer.innerHTML =
-            "Nenhuma informação descoberta ainda.";
-
-        return;
-    }
-
-    cluesContainer.innerHTML =
-        discoveredClues.map(item => `
-            <div class="clue-item">
-                <strong>${item.number}</strong><br>
-                ${item.clue}
-            </div>
-        `).join("");
-}
-
-
-/* =====================================================
-   REGISTRO
-===================================================== */
-
-function addLog(message) {
-
-    history.push(message);
-
-    const log =
-        document.getElementById("log");
-
-    log.innerHTML =
-        history.map((item, index) => `
-            <div class="log-entry">
-                <strong>${index + 1}.</strong>
-                ${item}
-            </div>
-        `).join("");
-
-    log.scrollTop = log.scrollHeight;
-}
-
-
-/* =====================================================
-   MENSAGEM
-===================================================== */
-
-function showMessage(message) {
-
-    const oldMessage =
-        document.querySelector(".temporary-message");
-
-    if (oldMessage) {
-        oldMessage.remove();
-    }
-
-    const div =
-        document.createElement("div");
-
-    div.className = "temporary-message";
-
-    div.textContent = message;
-
-    div.style.position = "fixed";
-    div.style.bottom = "25px";
-    div.style.left = "50%";
-    div.style.transform = "translateX(-50%)";
-    div.style.background = "#eee5d2";
-    div.style.padding = "15px 25px";
-    div.style.border = "1px solid #8c795d";
-    div.style.boxShadow = "0 5px 20px rgba(0,0,0,.4)";
-    div.style.zIndex = "20";
-
-    document.body.appendChild(div);
-
-    setTimeout(() => {
-
-        div.remove();
-
-    }, 950);
-}
-
-
-/* =====================================================
-   FINAIS
-===================================================== */
-
-function showFinal() {
-
-    document.getElementById("game")
-        .classList.remove("active");
-
-    document.getElementById("final")
+    document
+        .getElementById(id)
         .classList.add("active");
 
-    const final = calculateFinal();
 
-    document.getElementById("finalIcon")
-        .textContent = final.icon;
+    window.scrollTo({
 
-    document.getElementById("finalTitle")
-        .textContent = final.title;
+        top: 0,
 
-    document.getElementById("finalText")
-        .textContent = final.text;
+        behavior: "smooth"
 
-    document.getElementById("reflectionText")
-        .textContent = final.reflection;
+    });
 
-    document.getElementById("finalTerritory")
-        .textContent = stats.territory;
-
-    document.getElementById("finalProtection")
-        .textContent = stats.protection;
-
-    document.getElementById("finalDocumentation")
-        .textContent = stats.documentation;
-
-    document.getElementById("finalAutonomy")
-        .textContent = stats.autonomy;
 }
 
 
-/* =====================================================
-   DEFINIÇÃO DOS 8 FINAIS
-===================================================== */
-
-function calculateFinal() {
-
-    const t = stats.territory;
-    const p = stats.protection;
-    const d = stats.documentation;
-    const a = stats.autonomy;
-
-
-    /*
-       FINAL 1
-       Território + proteção + autonomia altos
-    */
-
-    if (t >= 65 && p >= 65 && a >= 60) {
-
-        return {
-
-            icon: "🌿",
-
-            title: "A comunidade conseguiu se proteger",
-
-            text:
-                "Ao longo da investigação, suas decisões ajudaram a construir uma situação em que a comunidade conseguiu preservar parte importante de seu território, fortalecer sua proteção e manter espaço para participar das decisões que afetavam sua vida.",
-
-            reflection:
-                "Você percebeu que proteger uma comunidade não depende de uma única decisão. O resultado foi construído pouco a pouco, conforme você investigava os documentos e escolhia como agir."
-        };
-    }
-
-
-    /*
-       FINAL 2
-       Documentação muito alta
-    */
-
-    if (d >= 80 && d >= t + 15 && d >= p + 10) {
-
-        return {
-
-            icon: "📚",
-
-            title: "A história não foi apagada",
-
-            text:
-                "Você reuniu uma grande quantidade de informações e conseguiu preservar documentos e relatos importantes. Mesmo sem resolver todos os problemas da comunidade, a história permaneceu registrada.",
-
-            reflection:
-                "Sua investigação mostrou que preservar a memória também é importante. Um acontecimento pode ser esquecido quando seus registros desaparecem."
-        };
-    }
-
-
-    /*
-       FINAL 3
-       Território baixo
-    */
-
-    if (t < 35) {
-
-        return {
-
-            icon: "🏞️",
-
-            title: "O território ficou ameaçado",
-
-            text:
-                "As decisões tomadas durante a investigação deixaram o território da comunidade mais vulnerável. A comunidade precisou lidar com mudanças em seu espaço e com uma redução de sua capacidade de controlar aquilo que acontecia ao seu redor.",
-
-            reflection:
-                "O resultado mostra como decisões relacionadas ao território podem afetar muito mais do que um pedaço de terra: elas podem atingir a vida e a organização de uma comunidade."
-        };
-    }
-
-
-    /*
-       FINAL 4
-       Proteção baixa
-    */
-
-    if (p < 35) {
-
-        return {
-
-            icon: "🛡️",
-
-            title: "Os documentos chegaram tarde demais",
-
-            text:
-                "Você encontrou informações importantes, mas as decisões tomadas ao longo do caminho não conseguiram aumentar suficientemente a proteção da comunidade.",
-
-            reflection:
-                "A investigação mostrou uma diferença importante: descobrir um problema é diferente de conseguir agir sobre ele."
-        };
-    }
-
-
-    /*
-       FINAL 5
-       Autonomia alta
-    */
-
-    if (a >= 75 && t >= 55) {
-
-        return {
-
-            icon: "🤝",
-
-            title: "A comunidade conseguiu manter sua voz",
-
-            text:
-                "As decisões tomadas durante a investigação deram mais espaço para que a própria comunidade participasse das escolhas que afetavam seu território e sua vida.",
-
-            reflection:
-                "Proteger uma comunidade não significa simplesmente decidir por ela. Escutar as pessoas diretamente afetadas também faz parte da proteção."
-        };
-    }
-
-
-    /*
-       FINAL 6
-       Documentação alta, outros indicadores baixos
-    */
-
-    if (d >= 70 && p < 55 && t < 55) {
-
-        return {
-
-            icon: "📄",
-
-            title: "Você descobriu muito, mas conseguiu mudar pouco",
-
-            text:
-                "Seu arquivo ficou cheio de informações importantes. Porém, a situação da comunidade continuou difícil porque poucas decisões foram capazes de transformar aquilo que você descobriu em proteção concreta.",
-
-            reflection:
-                "A investigação mostrou que conhecimento e ação estão relacionados, mas não são a mesma coisa."
-        };
-    }
-
-
-    /*
-       FINAL 7
-       Equilíbrio
-    */
-
-    const average =
-        (t + p + d + a) / 4;
-
-    const difference =
-        Math.max(t, p, d, a) -
-        Math.min(t, p, d, a);
-
-    if (average >= 55 && difference <= 25) {
-
-        return {
-
-            icon: "🌱",
-
-            title: "Um caminho de resistência",
-
-            text:
-                "Nenhum dos problemas desapareceu completamente, mas suas decisões ajudaram a preservar diferentes aspectos da vida da comunidade. O território, a proteção, a memória e a autonomia terminaram relativamente equilibrados.",
-
-            reflection:
-                "A investigação mostrou que situações históricas são complexas. Uma decisão pode ajudar em um aspecto e, ao mesmo tempo, não resolver outro."
-        };
-    }
-
-
-    /*
-       FINAL 8
-       Final restante
-    */
-
-    return {
-
-        icon: "📖",
-
-        title: "O arquivo ainda não está completo",
-
-        text:
-            "Você chegou ao fim dos documentos disponíveis, mas algumas perguntas continuam sem resposta. Parte da história foi preservada, enquanto outras situações permaneceram difíceis para a comunidade.",
-
-        reflection:
-            "Talvez essa seja uma das principais descobertas da investigação: a história não cabe em uma única resposta. É preciso continuar procurando documentos, ouvir diferentes pessoas e comparar diferentes versões."
-    };
-}
-
-
-/* =====================================================
-   REINICIAR
-===================================================== */
-
-function restartGame() {
-
-    document.getElementById("final")
-        .classList.remove("active");
-
-    document.getElementById("game")
-        .classList.add("active");
-
-    resetGame();
-
-    renderStage();
-}
-
-
-/* =====================================================
+/* =========================
    MODAIS
-===================================================== */
+========================= */
 
-function showHowToPlay() {
+function openModal(id) {
 
-    document.getElementById("howToPlay")
-        .classList.add("active");
-}
+    document
+        .getElementById(id)
+        .classList.add("open");
 
-
-function showSources() {
-
-    document.getElementById("sources")
-        .classList.add("active");
 }
 
 
 function closeModal(id) {
 
-    document.getElementById(id)
-        .classList.remove("active");
+    document
+        .getElementById(id)
+        .classList.remove("open");
+
+}
+
+
+document
+    .querySelectorAll(".modal")
+    .forEach(modal => {
+
+        modal.addEventListener(
+            "click",
+            event => {
+
+                if (event.target === modal) {
+
+                    modal.classList.remove("open");
+
+                }
+
+            }
+        );
+
+    });
+
+
+/* =========================
+   MOSTRAR CASOS
+========================= */
+
+function renderCases() {
+
+    const grid =
+        document.getElementById("caseGrid");
+
+
+    grid.innerHTML =
+        cases.map(c => {
+
+            const done =
+                state.completedCases.has(c.id);
+
+            const count =
+                state.revealed[c.id] || 0;
+
+
+            return `
+
+                <article class="case-card ${done ? "done" : ""}">
+
+                    <div class="case-number">
+                        ${c.number}
+                    </div>
+
+                    <h3>
+                        ${c.icon}
+                        ${c.title}
+                    </h3>
+
+                    <p>
+                        <strong>
+                            ${c.theme}
+                        </strong>
+                    </p>
+
+                    <p>
+                        ${c.summary}
+                    </p>
+
+                    <p class="case-source">
+                        Fonte-base:
+                        ${c.source}
+                    </p>
+
+                    <button
+                        onclick="openCase('${c.id}')">
+
+                        ${done
+                            ? "🔎 Rever investigação"
+                            : "📂 Abrir caso"
+                        }
+
+                    </button>
+
+                    <button
+                        onclick="openCase('${c.id}',true)">
+
+                        📄 Ver documentos
+                        (${count}/${c.documents.length})
+
+                    </button>
+
+                </article>
+
+            `;
+
+        })
+        .join("");
+
+}
+
+
+/* =========================
+   ABRIR CASO
+========================= */
+
+function openCase(id, showAll = false) {
+
+    const c =
+        cases.find(
+            x => x.id === id
+        );
+
+
+    if (!state.revealed[id]) {
+
+        state.revealed[id] = 0;
+
+    }
+
+
+    if (
+        !showAll &&
+        state.revealed[id] === 0
+    ) {
+
+        state.revealed[id] = 1;
+
+    }
+
+
+    renderCasePanel(c);
+
+    updateStats();
+
+
+    document
+        .getElementById("casePanel")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
+
+
+/* =========================
+   PAINEL DO CASO
+========================= */
+
+function renderCasePanel(c) {
+
+    const revealed =
+        state.revealed[c.id] || 0;
+
+
+    const docs =
+        c.documents
+            .map((doc, index) => {
+
+                if (index >= revealed) {
+
+                    return `
+
+                        <div class="document locked">
+
+                            <div class="document-header">
+
+                                <div>
+
+                                    <div class="type">
+                                        DOCUMENTO BLOQUEADO
+                                    </div>
+
+                                    <h3>
+                                        🔒 Documento
+                                        ${index + 1}
+                                    </h3>
+
+                                </div>
+
+                            </div>
+
+                            <p>
+                                Este documento será liberado
+                                quando a comissão avançar.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                const key =
+                    `${c.id}-${doc.id}`;
+
+
+                const analyzed =
+                    !!state.investigated[key];
+
+
+                return `
+
+                    <div class="document">
+
+                        <div class="document-header">
+
+                            <div>
+
+                                <div class="type">
+                                    ${doc.type}
+                                </div>
+
+                                <h3>
+                                    ${doc.id}
+                                    —
+                                    ${doc.title}
+                                </h3>
+
+                            </div>
+
+                            <span>
+                                ${
+                                    analyzed
+                                        ? "✓ ANALISADO"
+                                        : "📄 FONTE"
+                                }
+                            </span>
+
+                        </div>
+
+
+                        <p>
+                            ${doc.text}
+                        </p>
+
+
+                        <div class="analysis">
+
+                            <strong>
+                                🔎 Leitura da fonte:
+                            </strong>
+
+                            <br>
+
+                            ${doc.analysis}
+
+                        </div>
+
+
+                        <p class="case-source">
+                            ${doc.source}
+                        </p>
+
+
+                        ${
+                            !analyzed
+                                ? `
+
+                                    <button
+                                        class="primary"
+                                        onclick="analyzeDocument(
+                                            '${c.id}',
+                                            '${doc.id}'
+                                        )">
+
+                                        ✓ Marcar como analisado
+
+                                    </button>
+
+                                `
+                                : ""
+                        }
+
+                    </div>
+
+                `;
+
+            })
+            .join("");
+
+
+    let nextButton;
+
+
+    if (
+        revealed <
+        c.documents.length
+    ) {
+
+        nextButton = `
+
+            <button
+                class="primary"
+                onclick="unlockNext('${c.id}')">
+
+                🔓 Desbloquear próximo documento
+
+            </button>
+
+        `;
+
+    }
+
+    else if (
+        state.completedCases.has(c.id)
+    ) {
+
+        nextButton = `
+
+            <button
+                onclick="
+                    document
+                    .getElementById('casePanel')
+                    .classList
+                    .add('hidden')
+                ">
+
+                ✓ Caso registrado
+
+            </button>
+
+        `;
+
+    }
+
+    else {
+
+        nextButton = `
+
+            <button
+                class="primary"
+                onclick="completeCase('${c.id}')">
+
+                📜 Registrar investigação do caso
+
+            </button>
+
+        `;
+
+    }
+
+
+    document
+        .getElementById("casePanel")
+        .classList
+        .remove("hidden");
+
+
+    document
+        .getElementById("casePanel")
+        .innerHTML = `
+
+            <div class="paper-card">
+
+                <div class="case-label">
+                    ${c.number}
+                </div>
+
+                <h2>
+                    ${c.icon}
+                    ${c.title}
+                </h2>
+
+                <p>
+                    <strong>Tema:</strong>
+                    ${c.theme}
+                </p>
+
+                ${docs}
+
+
+                <div
+                    class="bottom-row"
+                    style="margin-top:18px">
+
+                    ${nextButton}
+
+
+                    <button
+                        onclick="
+                            document
+                            .getElementById('casePanel')
+                            .classList
+                            .add('hidden')
+                        ">
+
+                        Fechar documentos
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+}
+
+
+/* =========================
+   ANALISAR DOCUMENTO
+========================= */
+
+function analyzeDocument(
+    caseId,
+    docId
+) {
+
+    const key =
+        `${caseId}-${docId}`;
+
+
+    if (!state.investigated[key]) {
+
+        state.investigated[key] = true;
+
+        state.analyzedDocuments++;
+
+        state.openQuestions++;
+
+    }
+
+
+    const c =
+        cases.find(
+            x => x.id === caseId
+        );
+
+
+    renderCasePanel(c);
+
+    updateStats();
+
+}
+
+
+/* =========================
+   LIBERAR DOCUMENTO
+========================= */
+
+function unlockNext(caseId) {
+
+    const c =
+        cases.find(
+            x => x.id === caseId
+        );
+
+
+    state.revealed[caseId] =
+        Math.min(
+            (state.revealed[caseId] || 0) + 1,
+            c.documents.length
+        );
+
+
+    renderCasePanel(c);
+
+    updateStats();
+
+}
+
+
+/* =========================
+   CONCLUIR CASO
+========================= */
+
+function completeCase(caseId) {
+
+    state.completedCases.add(caseId);
+
+
+    if (
+        state.openQuestions > 0
+    ) {
+
+        state.openQuestions--;
+
+    }
+
+
+    renderCases();
+
+    renderCasePanel(
+        cases.find(
+            x => x.id === caseId
+        )
+    );
+
+    updateStats();
+
+
+    alert(
+        "Caso registrado na investigação da comissão."
+    );
+
+}
+
+
+/* =========================
+   ESTATÍSTICAS
+========================= */
+
+function updateStats() {
+
+    document
+        .getElementById("docsCount")
+        .textContent =
+        state.analyzedDocuments;
+
+
+    document
+        .getElementById("casesCount")
+        .textContent =
+        `${state.completedCases.size}/4`;
+
+
+    document
+        .getElementById("questionsCount")
+        .textContent =
+        state.openQuestions;
+
+
+    document
+        .getElementById("recsCount")
+        .textContent =
+        state.recommendations.length;
+
+}
+
+
+/* =========================
+   DEBATE
+========================= */
+
+function openDebate() {
+
+    if (
+        state.completedCases.size <
+        cases.length
+    ) {
+
+        const proceed =
+            confirm(
+                "Nem todos os quatro casos foram registrados. Deseja abrir o debate mesmo assim?"
+            );
+
+
+        if (!proceed) {
+
+            return;
+
+        }
+
+    }
+
+
+    renderDebate();
+
+    goTo("debate");
+
+}
+
+
+/* =========================
+   PERGUNTAS DO DEBATE
+========================= */
+
+function renderDebate() {
+
+    document
+        .getElementById("debateQuestions")
+        .innerHTML =
+
+        debateQuestions
+            .map(
+                (q, i) => `
+
+                    <article class="question-card">
+
+                        <div class="q-number">
+
+                            QUESTÃO
+                            ${i + 1}
+                            —
+                            ${q[0]}
+
+                        </div>
+
+
+                        <h3>
+                            ${q[1]}
+                        </h3>
+
+
+                        <p>
+
+                            💬 O mediador deve pedir
+                            que as respostas sejam
+                            justificadas pelos documentos.
+
+                        </p>
+
+                    </article>
+
+                `
+            )
+            .join("");
+
+
+    document
+        .getElementById("recommendations")
+        .innerHTML =
+
+        recommendations
+            .map(
+                (r, i) => `
+
+                    <label class="rec-option">
+
+                        <input
+                            type="checkbox"
+                            value="${i}"
+                            onchange="limitRecommendations(this)"
+                        >
+
+                        <span>
+                            ${r}
+                        </span>
+
+                    </label>
+
+                `
+            )
+            .join("");
+
+}
+
+
+/* =========================
+   LIMITAR VOTAÇÃO
+========================= */
+
+function limitRecommendations(input) {
+
+    const checked =
+        [
+            ...document.querySelectorAll(
+                "#recommendations input:checked"
+            )
+        ];
+
+
+    if (
+        checked.length > 3
+    ) {
+
+        input.checked = false;
+
+
+        document
+            .getElementById("voteMessage")
+            .textContent =
+            "A comissão pode escolher no máximo 3 recomendações.";
+
+        return;
+
+    }
+
+
+    document
+        .getElementById("voteMessage")
+        .textContent =
+        checked.length
+            ? `${checked.length}/3 recomendações selecionadas.`
+            : "";
+
+}
+
+
+/* =========================
+   FINALIZAR VOTAÇÃO
+========================= */
+
+function finishVote() {
+
+    const selected =
+
+        [
+            ...document.querySelectorAll(
+                "#recommendations input:checked"
+            )
+        ]
+
+        .map(
+            input =>
+                Number(input.value)
+        );
+
+
+    if (!selected.length) {
+
+        document
+            .getElementById("voteMessage")
+            .textContent =
+            "A comissão precisa selecionar pelo menos uma recomendação.";
+
+        return;
+
+    }
+
+
+    state.recommendations =
+        selected;
+
+
+    updateStats();
+
+    showFinal();
+
+}
+
+
+/* =========================
+   RELATÓRIO FINAL
+========================= */
+
+function showFinal() {
+
+    let title;
+
+    let text;
+
+
+    if (
+        state.completedCases.size === 4 &&
+        state.analyzedDocuments >= 12
+    ) {
+
+        title =
+            "O arquivo continua.";
+
+
+        text =
+            "A comissão conseguiu reunir e comparar os documentos dos quatro casos. Mesmo assim, a investigação terminou reconhecendo que alguns pontos continuam exigindo novas fontes e pesquisas. Em vez de preencher as lacunas com suposições, a comissão decidiu registrá-las.";
+
+    }
+
+    else if (
+        state.completedCases.size >= 2
+    ) {
+
+        title =
+            "Uma investigação em construção.";
+
+
+        text =
+            "A comissão conseguiu reunir parte importante das evidências, mas não analisou todos os casos disponíveis. O relatório registra aquilo que foi possível estabelecer e deixa claro o que ainda precisa ser investigado.";
+
+    }
+
+    else {
+
+        title =
+            "O arquivo ainda não está completo.";
+
+
+        text =
+            "A comissão encerrou a atividade com documentos e questões ainda em aberto. Isso faz parte da investigação histórica: uma conclusão responsável também precisa reconhecer os limites das evidências disponíveis.";
+
+    }
+
+
+    document
+        .getElementById("finalTitle")
+        .textContent =
+        title;
+
+
+    document
+        .getElementById("finalText")
+        .textContent =
+        text;
+
+
+    document
+        .getElementById("finalFindings")
+        .innerHTML =
+
+        cases
+
+            .filter(
+                c =>
+                    state.completedCases.has(
+                        c.id
+                    )
+            )
+
+            .map(
+                c => `
+
+                    <li>
+
+                        <strong>
+                            ${c.title}:
+                        </strong>
+
+                        documentos sobre
+                        ${c.theme.toLowerCase()}
+                        foram analisados.
+
+                    </li>
+
+                `
+            )
+
+            .join("")
+
+        ||
+
+        "<li>Nenhum caso foi registrado como concluído.</li>";
+
+
+    document
+        .getElementById("finalQuestions")
+        .innerHTML =
+
+        [
+
+            "Nem toda informação de uma fonte pode ser generalizada para todos os povos ou situações.",
+
+            "A documentação histórica possui lacunas e precisa ser complementada por novas fontes.",
+
+            "É necessário distinguir o que uma fonte comprova do que ainda é hipótese ou questão de investigação."
+
+        ]
+
+        .map(
+            x => `<li>${x}</li>`
+        )
+
+        .join("");
+
+
+    document
+        .getElementById("finalRecommendations")
+        .innerHTML =
+
+        state.recommendations
+
+            .map(
+                i =>
+                    `<li>${recommendations[i]}</li>`
+            )
+
+            .join("");
+
+
+    goTo("final");
+
+}
+
+
+/* =========================
+   REINICIAR
+========================= */
+
+function restartGame() {
+
+    if (
+        confirm(
+            "Deseja reiniciar toda a investigação?"
+        )
+    ) {
+
+        startGame();
+
+    }
+
 }
